@@ -1,0 +1,1824 @@
+{
+  "title": "知行职业学院 · 业务需求发现报告",
+  "generatedAt": "2026-11-05T09:34:25.116Z",
+  "library": "general",
+  "publicSources": [],
+  "case": "开学第一周的选课冲突",
+  "industry": "教育",
+  "opening": "我们在“排课选课与教务协作”上投入了很多人力。学生看到可选课程，但选中后才发现先修课或教室冲突。管理层希望用 AI 改善，但还没有确定优先环节、验收标准和权限边界。请你先和各岗位聊聊，找出值得验证的业务需求。",
+  "coverage": {
+    "found": 36,
+    "total": 36,
+    "percent": 100
+  },
+  "note": "本报告基于合成场景访谈；需求为待验证假设。采集完整不等于真实业务需求已确认。",
+  "requirements": [
+    {
+      "title": "排课选课与教务协作：明确业务目标与试点条件",
+      "owner": "教务主任",
+      "status": "已完成角色事实采集，仍需试点验证",
+      "priority": "P1",
+      "evidence": [
+        {
+          "id": "education-enrollment-f00",
+          "source": "教育-001 · 访谈事实记录",
+          "text": "每学期 360 个选课冲突，目标 80 个；调课处理 3 天降到 1 天",
+          "character": "顾明岚"
+        },
+        {
+          "id": "education-enrollment-f01",
+          "source": "教育-002 · 业务事件样本",
+          "text": "当前主流程是：教学计划 → 排课 → 选课 → 冲突校验 → 调整 → 名单确认。管理层还没有分别量出每个节点的等待和处理时间。",
+          "character": "顾明岚"
+        },
+        {
+          "id": "education-enrollment-f05",
+          "source": "教育-021 · 验证与反馈记录",
+          "text": "冲突检查与方案建议，不自动改变培养计划。首期采用历史资料回放，再做小范围并行试点，不直接替换现有业务。",
+          "character": "顾明岚"
+        },
+        {
+          "id": "education-enrollment-f02",
+          "source": "教育-003 · 流程与约束说明",
+          "text": "一个专业试点，时空冲突识别率 100%，人工调整工时下降 30%",
+          "character": "顾明岚"
+        },
+        {
+          "id": "education-enrollment-f03",
+          "source": "教育-019 · 执行条件记录",
+          "text": "首期可用预算 10 万元，包含集成、培训与验证。收益要扣除维护及人工复核成本，不能把全部节省工时当作现金回款。",
+          "character": "顾明岚"
+        },
+        {
+          "id": "education-enrollment-f04",
+          "source": "教育-020 · 协作规则记录",
+          "text": "立项由教务主任推动；教学质量专员可以因关键风险否决上线，专业课程负责人参与服务结果验收。",
+          "character": "顾明岚"
+        }
+      ],
+      "acceptance": "一个专业试点，时空冲突识别率 100%，人工调整工时下降 30%"
+    },
+    {
+      "title": "排课选课与教务协作：一线异常与操作辅助",
+      "owner": "班级辅导员",
+      "status": "已完成角色事实采集，仍需试点验证",
+      "priority": "P1",
+      "evidence": [
+        {
+          "id": "education-enrollment-f10",
+          "source": "教育-004 · 访谈事实记录",
+          "text": "学生看到可选课程，但选中后才发现先修课或教室冲突",
+          "character": "林亦舟"
+        },
+        {
+          "id": "education-enrollment-f12",
+          "source": "教育-006 · 流程与约束说明",
+          "text": "每学期 420 门次课程，开学周日均 120 个调整请求",
+          "character": "林亦舟"
+        },
+        {
+          "id": "education-enrollment-f11",
+          "source": "教育-005 · 业务事件样本",
+          "text": "实训室设备维护占用场地，排课表仍把它当作可用教室",
+          "character": "林亦舟"
+        },
+        {
+          "id": "education-enrollment-f15",
+          "source": "教育-024 · 验证与反馈记录",
+          "text": "建议必须显示对应原记录和待确认字段。发生“实训室设备维护占用场地，排课表仍把它当作可用教室”时，我会暂停该建议，由排课专员核对后继续，错误结果不能覆盖原记录。",
+          "character": "林亦舟"
+        },
+        {
+          "id": "education-enrollment-f13",
+          "source": "教育-022 · 执行条件记录",
+          "text": "现场执行围绕“排课选课与教务协作”。高峰期只能使用现有终端，离开业务现场去补录会延误处理；草稿应可暂存，并明确最后同步时间。",
+          "character": "林亦舟"
+        },
+        {
+          "id": "education-enrollment-f14",
+          "source": "教育-023 · 协作规则记录",
+          "text": "因为“学生看到可选课程，但选中后才发现先修课或教室冲突”，同事经常把关键说明留在个人便签或群里，再补进正式记录；这些说明目前没有随单据交接。",
+          "character": "林亦舟"
+        }
+      ],
+      "acceptance": "每学期 420 门次课程，开学周日均 120 个调整请求"
+    },
+    {
+      "title": "排课选课与教务协作：流程规则与责任交接",
+      "owner": "排课专员",
+      "status": "已完成角色事实采集，仍需试点验证",
+      "priority": "P0",
+      "evidence": [
+        {
+          "id": "education-enrollment-f20",
+          "source": "教育-007 · 访谈事实记录",
+          "text": "教学计划 → 排课 → 选课 → 冲突校验 → 调整 → 名单确认。我负责把每一步的输入、输出和待办责任人写清楚；退回原步骤必须保留原因。",
+          "character": "唐映秋"
+        },
+        {
+          "id": "education-enrollment-f21",
+          "source": "教育-008 · 业务事件样本",
+          "text": "培养方案、先修关系、教室容量、教师排班",
+          "character": "唐映秋"
+        },
+        {
+          "id": "education-enrollment-f22",
+          "source": "教育-009 · 流程与约束说明",
+          "text": "我的岗位是排课专员，可以整理、校核和发起复核；不能代替教学质量专员完成专业签核，也不能自行批准“冲突检查与方案建议，不自动改变培养计划”以外操作。",
+          "character": "唐映秋"
+        },
+        {
+          "id": "education-enrollment-f24",
+          "source": "教育-026 · 协作规则记录",
+          "text": "与“排课选课与教务协作”相关规则由业务负责人维护，按生效日期和适用范围选版本。规则冲突时附两个版本给教学质量专员，不自行合并或选较宽松条款。",
+          "character": "唐映秋"
+        },
+        {
+          "id": "education-enrollment-f23",
+          "source": "教育-025 · 执行条件记录",
+          "text": "交接至少包含业务编号、当前版本、处理状态、未解决事项和接手人。对方确认接手才结束本岗待办，仅发送消息不算完成。",
+          "character": "唐映秋"
+        },
+        {
+          "id": "education-enrollment-f25",
+          "source": "教育-027 · 验证与反馈记录",
+          "text": "异常先由排课专员分派给实际处理人；超过约定时限再升级到教务主任。跨岗问题不能只写“已转交”，需要明确下一责任人。",
+          "character": "唐映秋"
+        }
+      ],
+      "acceptance": "我的岗位是排课专员，可以整理、校核和发起复核；不能代替教学质量专员完成专业签核，也不能自行批准“冲突检查与方案建议，不自动改变培养计划”以外操作。"
+    },
+    {
+      "title": "排课选课与教务协作：数据口径与接口治理",
+      "owner": "教务系统工程师",
+      "status": "已完成角色事实采集，仍需试点验证",
+      "priority": "P1",
+      "evidence": [
+        {
+          "id": "education-enrollment-f30",
+          "source": "教育-010 · 访谈事实记录",
+          "text": "我们正在使用教务系统、场地预约和学籍库，各系统账号权限独立维护，业务状态尚没有统一视图。",
+          "character": "秦芮"
+        },
+        {
+          "id": "education-enrollment-f31",
+          "source": "教育-011 · 业务事件样本",
+          "text": "课程新旧代码并存，跨学院学生权限和容量规则不同",
+          "character": "秦芮"
+        },
+        {
+          "id": "education-enrollment-f33",
+          "source": "教育-028 · 执行条件记录",
+          "text": "先校验“培养方案、先修关系、教室容量、教师排班”里的主编号、事件时间和版本字段。课程新旧代码并存，跨学院学生权限和容量规则不同；有歧义的记录进入人工修复队列，不进入自动推荐样本。",
+          "character": "秦芮"
+        },
+        {
+          "id": "education-enrollment-f32",
+          "source": "教育-012 · 流程与约束说明",
+          "text": "可读课程和冲突，不能自动替学生选课或修改成绩",
+          "character": "秦芮"
+        },
+        {
+          "id": "education-enrollment-f34",
+          "source": "教育-029 · 协作规则记录",
+          "text": "本次试点计划每 15 分钟更新已授权的业务状态，原始资料按版本更新；信息超过一个更新周期就标为待刷新，不能作为实时承诺。",
+          "character": "秦芮"
+        },
+        {
+          "id": "education-enrollment-f35",
+          "source": "教育-030 · 验证与反馈记录",
+          "text": "接口中断时继续使用带时间戳的上一份只读快照，并显示“暂未更新”。重连后按业务编号去重补齐，不反复触发同一待办；现有人工流程继续运行。",
+          "character": "秦芮"
+        }
+      ],
+      "acceptance": "可读课程和冲突，不能自动替学生选课或修改成绩"
+    },
+    {
+      "title": "排课选课与教务协作：约束核验与人工兜底",
+      "owner": "教学质量专员",
+      "status": "已完成角色事实采集，仍需试点验证",
+      "priority": "P0",
+      "evidence": [
+        {
+          "id": "education-enrollment-f41",
+          "source": "教育-014 · 业务事件样本",
+          "text": "只有授权的业务岗位可以查看“培养方案、先修关系、教室容量、教师排班”。涉及最终决定、对外承诺或资产变更，要由对应审批人确认，不能借用其他人的账号。",
+          "character": "傅景"
+        },
+        {
+          "id": "education-enrollment-f40",
+          "source": "教育-013 · 访谈事实记录",
+          "text": "课程资格和公平分配要保留依据，特殊申请由教务确认",
+          "character": "傅景"
+        },
+        {
+          "id": "education-enrollment-f42",
+          "source": "教育-015 · 流程与约束说明",
+          "text": "一个专业试点，时空冲突识别率 100%，人工调整工时下降 30%；同时检查“课程资格和公平分配要保留依据，特殊申请由教务确认”。只要触及停止条件，就暂停试点并由负责人复盘。",
+          "character": "傅景"
+        },
+        {
+          "id": "education-enrollment-f43",
+          "source": "教育-031 · 执行条件记录",
+          "text": "试点原始资料按本场景授权范围保存；本轮评价记录暂保留 90 天，期满由教学质量专员复核删除或归档。真实期限仍须按组织规则另行确定。",
+          "character": "傅景"
+        },
+        {
+          "id": "education-enrollment-f44",
+          "source": "教育-032 · 协作规则记录",
+          "text": "出现“实训室设备维护占用场地，排课表仍把它当作可用教室”、资料缺少依据、两个版本冲突或关键系统不可用时转人工。需要标注触发原因、接手人和确认时间，不能只给一句模糊提醒。",
+          "character": "傅景"
+        },
+        {
+          "id": "education-enrollment-f45",
+          "source": "教育-033 · 验证与反馈记录",
+          "text": "每次建议保留业务编号、资料版本、事实引用、建议结果、人工改动和签核人。审计时应能重建“教学计划 → 排课 → 选课 → 冲突校验 → 调整 → 名单确认”中的这次处理，不记录账号口令或不必要的个人信息。",
+          "character": "傅景"
+        }
+      ],
+      "acceptance": "一个专业试点，时空冲突识别率 100%，人工调整工时下降 30%；同时检查“课程资格和公平分配要保留依据，特殊申请由教务确认”。只要触及停止条件，就暂停试点并由负责人复盘。"
+    },
+    {
+      "title": "排课选课与教务协作：服务解释与反馈闭环",
+      "owner": "专业课程负责人",
+      "status": "已完成角色事实采集，仍需试点验证",
+      "priority": "P1",
+      "evidence": [
+        {
+          "id": "education-enrollment-f50",
+          "source": "教育-016 · 访谈事实记录",
+          "text": "教师关心连堂，学生关心毕业要求，教务关心场地容量",
+          "character": "叶书"
+        },
+        {
+          "id": "education-enrollment-f53",
+          "source": "教育-034 · 执行条件记录",
+          "text": "教师关心连堂，学生关心毕业要求，教务关心场地容量。需要分别记录各岗完成时间，试点指标固定分母、排除规则和统计周期，不能把同一业务拆成多次“成功”提高比例。",
+          "character": "叶书"
+        },
+        {
+          "id": "education-enrollment-f51",
+          "source": "教育-017 · 业务事件样本",
+          "text": "目前可用工作量基线是：每学期 420 门次课程，开学周日均 120 个调整请求。服务侧还会逐笔采集交接等待和重新联系次数，不能用发送通知数量代替实际完成量。",
+          "character": "叶书"
+        },
+        {
+          "id": "education-enrollment-f54",
+          "source": "教育-035 · 协作规则记录",
+          "text": "客户或下游反馈优先关联原业务编号和当时使用的资料版本，再查实际交接是否完成。争议由专业课程负责人受理、排课专员核对，未经确认不承诺赔偿或结果。",
+          "character": "叶书"
+        },
+        {
+          "id": "education-enrollment-f55",
+          "source": "教育-036 · 验证与反馈记录",
+          "text": "试点每周收集 班级辅导员、排课专员、专业课程负责人 的误判例子和未解决问题，由教务主任确认改进负责人；先复测“一个专业试点，时空冲突识别率 100%，人工调整工时下降 30%”，再更新规则版本。",
+          "character": "叶书"
+        },
+        {
+          "id": "education-enrollment-f52",
+          "source": "教育-018 · 流程与约束说明",
+          "text": "冲突检查与方案建议，不自动改变培养计划",
+          "character": "叶书"
+        }
+      ],
+      "acceptance": "冲突检查与方案建议，不自动改变培养计划"
+    }
+  ],
+  "gaps": [],
+  "transcript": [
+    {
+      "id": "turn-1",
+      "speaker": "user",
+      "characterId": "education-enrollment-r0",
+      "text": "这次最希望达成的业务目标是什么？",
+      "at": "2026-11-05T09:28:51.420Z"
+    },
+    {
+      "id": "turn-2",
+      "speaker": "character",
+      "characterId": "education-enrollment-r0",
+      "text": "我这边最核心的目标很明确：每学期选课冲突从 360 个压到 80 个，调课处理从 3 天降到 1 天 [education-enrollment-f00]。这两个数字是我判断试点成不成的硬指标，不是方向性口号。\n\n但我要先说清楚我的边界：我能定的是试点范围、验收口径和跨科室的协调节奏；涉及系统改造、数据接口和权限开放，得秦芮和傅景那边确认，我不能替他们拍板。\n\n所以我想先跟你核实两件事：一是这 360 个冲突里，先修课不满足和教室冲突各占多少，口径没对齐，验收就没法算；二是试点打算覆盖哪几个专业、哪个学期，范围太大我兜不住。这两点目前尚未核实，需要你给个初步假设，我再判断值不值得推。",
+      "at": "2026-11-05T09:28:51.420Z",
+      "factIds": [
+        "education-enrollment-f00"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "e8cba691-74af-438b-8e4b-ddd222cf70bd",
+        "at": "2026-11-05T09:28:51.420Z",
+        "durationMs": 2164,
+        "usage": {
+          "prompt_tokens": 851,
+          "completion_tokens": 203,
+          "total_tokens": 1054
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "0a05dec1-11c1-48ea-85f5-87b66cb74c55",
+          "at": "2026-11-05T09:28:49.256Z",
+          "durationMs": 505,
+          "usage": {
+            "prompt_tokens": 395,
+            "completion_tokens": 12,
+            "total_tokens": 407
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-3",
+      "speaker": "user",
+      "characterId": "education-enrollment-r0",
+      "text": "请讲讲现在实际的处理流程。",
+      "at": "2026-11-05T09:29:04.607Z"
+    },
+    {
+      "id": "turn-4",
+      "speaker": "character",
+      "characterId": "education-enrollment-r0",
+      "text": "当前主流程是教学计划 → 排课 → 选课 → 冲突校验 → 调整 → 名单确认 [education-enrollment-f01]。但我要提醒你，管理层目前还没有分别量出每个节点的等待和处理时间 [education-enrollment-f01]，所以现在谈“哪个环节最值得先改”，我只能给判断方向，给不了排序依据。\n\n从我职责看，流程里最让我难受的是冲突暴露得太晚——学生选中后才发现先修课或教室冲突，等于把校验成本推到了调整和名单确认阶段。但各节点耗时占比尚未核实，需要你或秦芮那边先补上分段计时口径，否则验收时说不清改善发生在哪一段。\n\n另外，我倾向首期只做冲突检查与方案建议，不自动改变培养计划，先历史资料回放再小范围并行试点 [education-enrollment-f05]。这条线我能定；涉及系统改造和权限开放，得秦芮、傅景确认，我不越界拍板。你先说试点打算覆盖哪几个专业、哪个学期？",
+      "at": "2026-11-05T09:29:04.607Z",
+      "factIds": [
+        "education-enrollment-f01",
+        "education-enrollment-f05"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "3a4dc9f8-c542-4048-8edf-cedf3aed2a66",
+        "at": "2026-11-05T09:29:04.607Z",
+        "durationMs": 1925,
+        "usage": {
+          "prompt_tokens": 1150,
+          "completion_tokens": 247,
+          "total_tokens": 1397
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "1f8aa029-92c1-464b-8eac-6cee422a91c6",
+          "at": "2026-11-05T09:29:02.682Z",
+          "durationMs": 1010,
+          "usage": {
+            "prompt_tokens": 623,
+            "completion_tokens": 18,
+            "total_tokens": 641
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-5",
+      "speaker": "user",
+      "characterId": "education-enrollment-r0",
+      "text": "怎么验收成功？试点标准是什么？",
+      "at": "2026-11-05T09:29:19.217Z"
+    },
+    {
+      "id": "turn-6",
+      "speaker": "character",
+      "characterId": "education-enrollment-r0",
+      "text": "验收我分两层看。第一层是硬指标：一个专业试点，时空冲突识别率 100%，人工调整工时下降 30% [education-enrollment-f02]；同时对照学期总目标，选课冲突从 360 个压到 80 个、调课处理从 3 天降到 1 天 [education-enrollment-f00]。第二层是过程口径：冲突要按先修课不满足和教室冲突分开计数，否则 100% 识别率没法核验，这个分类占比目前尚未核实。\n\n试点标准我倾向三条：只覆盖一个专业、一个学期；先做历史资料回放，再小范围并行，不自动改培养计划；异常必须留人工兜底和交接记录。范围我能定，但系统改造和权限开放要秦芮、傅景确认，我不替他们拍板。你先明确试点是哪个专业、哪个学期，以及 30% 工时按哪个节点计时，否则验收算不清。",
+      "at": "2026-11-05T09:29:19.217Z",
+      "factIds": [
+        "education-enrollment-f02",
+        "education-enrollment-f00"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "035a654c-85c1-4d88-b48a-8bf5976e613e",
+        "at": "2026-11-05T09:29:19.217Z",
+        "durationMs": 2089,
+        "usage": {
+          "prompt_tokens": 1474,
+          "completion_tokens": 233,
+          "total_tokens": 1707
+        },
+        "attemptCount": 2,
+        "attempts": [
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "48a40e08-7b2d-497f-87db-5ae98cfdec56",
+            "at": "2026-11-05T09:29:17.128Z",
+            "durationMs": 2275,
+            "usage": {
+              "prompt_tokens": 1398,
+              "completion_tokens": 246,
+              "total_tokens": 1644
+            }
+          },
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "035a654c-85c1-4d88-b48a-8bf5976e613e",
+            "at": "2026-11-05T09:29:19.217Z",
+            "durationMs": 2089,
+            "usage": {
+              "prompt_tokens": 1474,
+              "completion_tokens": 233,
+              "total_tokens": 1707
+            }
+          }
+        ],
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "188fa29f-bb52-4d7f-8c3b-ba72be1ca48c",
+          "at": "2026-11-05T09:29:14.853Z",
+          "durationMs": 821,
+          "usage": {
+            "prompt_tokens": 895,
+            "completion_tokens": 30,
+            "total_tokens": 925
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-7",
+      "speaker": "user",
+      "characterId": "education-enrollment-r0",
+      "text": "试点预算是多少，成本怎样核算？",
+      "at": "2026-11-05T09:29:24.269Z"
+    },
+    {
+      "id": "turn-8",
+      "speaker": "character",
+      "characterId": "education-enrollment-r0",
+      "text": "首期可用预算 10 万元，包含集成、培训与验证 [education-enrollment-f03]。这笔钱是我能认的执行条件，但怎么花、花在哪一段，得跟试点范围绑在一起看——范围没定，预算就是悬的。\n\n成本核算上我坚持一条：收益要扣除维护及人工复核成本，不能把全部节省工时当作现金回款 [education-enrollment-f03]。也就是说，验收时算的是净收益，不是账面工时。人工兜底和复核这块，试点期间必须单列，不能摊进“节省”里。\n\n现在缺的是分项口径：集成、培训、验证各占多少，目前尚未核实，需要秦芮那边给出集成侧的工作量假设，我才能判断 10 万够不够覆盖一个专业、一个学期的试点。你先说试点覆盖哪个专业、哪个学期，以及人工复核成本按什么节点计时，我再决定这笔预算怎么切。",
+      "at": "2026-11-05T09:29:24.269Z",
+      "factIds": [
+        "education-enrollment-f03"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "b3c9c977-ac8c-40ab-845c-511a419a101d",
+        "at": "2026-11-05T09:29:24.269Z",
+        "durationMs": 2073,
+        "usage": {
+          "prompt_tokens": 1618,
+          "completion_tokens": 216,
+          "total_tokens": 1834
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "f932b129-899c-4620-9d29-1e3c6b0e2b29",
+          "at": "2026-11-05T09:29:22.196Z",
+          "durationMs": 507,
+          "usage": {
+            "prompt_tokens": 1154,
+            "completion_tokens": 12,
+            "total_tokens": 1166
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-9",
+      "speaker": "user",
+      "characterId": "education-enrollment-r0",
+      "text": "谁参与决策，谁可以否决方案？",
+      "at": "2026-11-05T09:29:29.747Z"
+    },
+    {
+      "id": "turn-10",
+      "speaker": "character",
+      "characterId": "education-enrollment-r0",
+      "text": "决策链我先说清楚：立项由我推动，但上线不是我一个人说了算——教学质量专员可以因关键风险否决上线，专业课程负责人参与服务结果验收 [education-enrollment-f04]。这意味着我定的是试点范围、验收口径和协调节奏，傅景那边卡的是风险红线，叶书那边认的是服务结果，三方任何一方不点头，试点就推不下去。\n\n所以我想跟你核实：你打算在方案里怎么安排这三方的介入节点？我的建议是风险评审放在历史资料回放之后、并行试点之前，验收口径由我和叶书先对齐再提交，但这只是待验证假设，尚未核实。另外，否决触发条件具体指哪些关键风险，需要傅景明确，我不替他定。你先说试点覆盖哪个专业、哪个学期，我好判断要不要提前拉三方碰一次。",
+      "at": "2026-11-05T09:29:29.747Z",
+      "factIds": [
+        "education-enrollment-f04"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "26e04ca8-5c03-46f1-b886-94aabf9520d3",
+        "at": "2026-11-05T09:29:29.747Z",
+        "durationMs": 2370,
+        "usage": {
+          "prompt_tokens": 1848,
+          "completion_tokens": 191,
+          "total_tokens": 2039
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "df1ea259-beee-4a05-99d3-898003181324",
+          "at": "2026-11-05T09:29:27.377Z",
+          "durationMs": 687,
+          "usage": {
+            "prompt_tokens": 1396,
+            "completion_tokens": 12,
+            "total_tokens": 1408
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-11",
+      "speaker": "user",
+      "characterId": "education-enrollment-r1",
+      "text": "你日常有哪些痛点，最费时间的环节是什么？",
+      "at": "2026-11-05T09:29:38.991Z"
+    },
+    {
+      "id": "turn-12",
+      "speaker": "character",
+      "characterId": "education-enrollment-r1",
+      "text": "从我这边的现场看，最直接的痛点是学生选课时的信息不对称：学生看到可选课程，但选中后才发现先修课或教室冲突 [education-enrollment-f10]。这类问题最后往往落到班级层面来协调，我要一个个跟学生解释、再去找排课和教务确认，来回沟通很耗时间。\n\n量级上也不轻：每学期 420 门次课程，开学周日均 120 个调整请求 [education-enrollment-f12]，开学那几天基本都在处理调整和答疑。\n\n不过具体哪一类异常占比最高、哪些能前置拦截，我手上还没有核实过的数据，不能凭感觉下结论。如果要做试点，我建议先验证“选课前把先修和教室冲突提示出来”这一环，但这是待验证假设，需要排课和系统侧确认可行性。你们希望我先聚焦哪类异常？",
+      "at": "2026-11-05T09:29:38.991Z",
+      "factIds": [
+        "education-enrollment-f10",
+        "education-enrollment-f12"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "381fad6c-6ca3-4afa-a05c-846472eb943e",
+        "at": "2026-11-05T09:29:38.991Z",
+        "durationMs": 2148,
+        "usage": {
+          "prompt_tokens": 962,
+          "completion_tokens": 209,
+          "total_tokens": 1171
+        },
+        "attemptCount": 2,
+        "attempts": [
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "a13f56c0-7d24-49ce-b3bd-06164662cc9e",
+            "at": "2026-11-05T09:29:36.843Z",
+            "durationMs": 2515,
+            "usage": {
+              "prompt_tokens": 886,
+              "completion_tokens": 199,
+              "total_tokens": 1085
+            }
+          },
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "381fad6c-6ca3-4afa-a05c-846472eb943e",
+            "at": "2026-11-05T09:29:38.991Z",
+            "durationMs": 2148,
+            "usage": {
+              "prompt_tokens": 962,
+              "completion_tokens": 209,
+              "total_tokens": 1171
+            }
+          }
+        ],
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "37e9a244-a553-4f8c-b9c2-3b0b409fbf3e",
+          "at": "2026-11-05T09:29:34.327Z",
+          "durationMs": 620,
+          "usage": {
+            "prompt_tokens": 409,
+            "completion_tokens": 36,
+            "total_tokens": 445
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-13",
+      "speaker": "user",
+      "characterId": "education-enrollment-r1",
+      "text": "能给我一个具体的异常或失败例子吗？",
+      "at": "2026-11-05T09:29:56.509Z"
+    },
+    {
+      "id": "turn-14",
+      "speaker": "character",
+      "characterId": "education-enrollment-r1",
+      "text": "有，而且这类异常我印象很深：实训室设备维护占用场地，排课表仍把它当作可用教室 [education-enrollment-f11]。学生按表去上课，到了才发现进不去，最后是我在班级层面临时协调、再找排课专员确认，开学周本来就忙，这种来回很消耗人。\n\n所以我对任何辅助建议的底线是：建议必须显示对应原记录和待确认字段；一旦碰到上面这种场地占用情况，我会暂停该建议，由排课专员核对后继续，错误结果不能覆盖原记录 [education-enrollment-f15]。这条我能守住，但“谁来判定场地是否可用”不在我权限内，需要排课和系统侧明确。\n\n想请你澄清一下：你说的“具体例子”是想看单条异常的处理过程，还是想看这类异常在开学周的分布？后者我手上没有核实过的数据，不能凭感觉给。",
+      "at": "2026-11-05T09:29:56.509Z",
+      "factIds": [
+        "education-enrollment-f11",
+        "education-enrollment-f15"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "7a7c35ed-a547-47c7-9901-4f4a02f3026b",
+        "at": "2026-11-05T09:29:56.509Z",
+        "durationMs": 1918,
+        "usage": {
+          "prompt_tokens": 1157,
+          "completion_tokens": 214,
+          "total_tokens": 1371
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "39ee589d-c753-4535-9cc1-53d4c38170a8",
+          "at": "2026-11-05T09:29:54.591Z",
+          "durationMs": 634,
+          "usage": {
+            "prompt_tokens": 646,
+            "completion_tokens": 24,
+            "total_tokens": 670
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-15",
+      "speaker": "user",
+      "characterId": "education-enrollment-r1",
+      "text": "现场操作有什么限制，设备和网络情况怎样？",
+      "at": "2026-11-05T09:30:01.494Z"
+    },
+    {
+      "id": "turn-16",
+      "speaker": "character",
+      "characterId": "education-enrollment-r1",
+      "text": "现场执行这块，我能确认的是：高峰期只能用现有终端，不能离开业务现场去补录，否则会延误处理；草稿需要能暂存，并且要明确最后同步时间 [education-enrollment-f13]。这意味着任何辅助功能如果要求我切到别的设备或另开一套流程，开学周我基本用不了。\n\n至于网络稳定性、终端数量和具体配置，我手上没有核实过的数据，不能凭感觉说。建议你们找系统侧确认这些条件，再判断“选课前冲突提示”这类功能在现场是否跑得动——这是待验证假设。\n\n我想先澄清一点：你们问设备网络，是想评估辅助功能能否在现有终端上直接使用，还是想确认异常处理时数据能否及时同步？这两个方向对试点范围影响不一样。",
+      "at": "2026-11-05T09:30:01.494Z",
+      "factIds": [
+        "education-enrollment-f13"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "0ac9497a-21b8-4c7f-b6b2-3a07dea3c3ea",
+        "at": "2026-11-05T09:30:01.494Z",
+        "durationMs": 1740,
+        "usage": {
+          "prompt_tokens": 1346,
+          "completion_tokens": 183,
+          "total_tokens": 1529
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "4921b4b6-e57e-4169-a5aa-68a69ae28e30",
+          "at": "2026-11-05T09:29:59.754Z",
+          "durationMs": 599,
+          "usage": {
+            "prompt_tokens": 888,
+            "completion_tokens": 12,
+            "total_tokens": 900
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-17",
+      "speaker": "user",
+      "characterId": "education-enrollment-r1",
+      "text": "一线有什么绕开系统的习惯，原因是什么？",
+      "at": "2026-11-05T09:30:08.228Z"
+    },
+    {
+      "id": "turn-18",
+      "speaker": "character",
+      "characterId": "education-enrollment-r1",
+      "text": "有，而且这个习惯跟前面说的信息不对称直接相关：因为学生看到可选课程、选中后才发现先修课或教室冲突 [education-enrollment-f10]，同事经常把关键说明留在个人便签或群里，再补进正式记录，这些说明目前没有随单据交接 [education-enrollment-f14]。\n\n原因我理解是两点：一是现场节奏快，先记下来再补正式记录最省事；二是正式记录里没有合适的位置放这类临时说明。但代价是交接时信息断档，换人接手就得重新问一遍。\n\n需要说明的是，这只是我观察到的习惯，涉及多少同事、频次多高，我手上没有核实过的数据。如果你们想改这个习惯，得先确认正式记录能不能承载这类说明、补录由谁负责——这不在我权限内，需要排课专员和系统侧明确。你们是想把这类说明纳入交接流程，还是只想先摸清现状？",
+      "at": "2026-11-05T09:30:08.228Z",
+      "factIds": [
+        "education-enrollment-f10",
+        "education-enrollment-f14"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "3ce51ad6-55cf-4af5-8f57-38ba560525c5",
+        "at": "2026-11-05T09:30:08.228Z",
+        "durationMs": 2427,
+        "usage": {
+          "prompt_tokens": 1601,
+          "completion_tokens": 225,
+          "total_tokens": 1826
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "c11b6e09-5de6-4c2d-ba87-2bfb7e1981bc",
+          "at": "2026-11-05T09:30:05.801Z",
+          "durationMs": 745,
+          "usage": {
+            "prompt_tokens": 1098,
+            "completion_tokens": 18,
+            "total_tokens": 1116
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-19",
+      "speaker": "user",
+      "characterId": "education-enrollment-r2",
+      "text": "请讲讲现在实际的处理流程。",
+      "at": "2026-11-05T09:30:19.369Z"
+    },
+    {
+      "id": "turn-20",
+      "speaker": "character",
+      "characterId": "education-enrollment-r2",
+      "text": "我先把流程说清楚：教学计划 → 排课 → 选课 → 冲突校验 → 调整 → 名单确认，每一步的输入、输出和待办责任人由我写清楚，退回原步骤必须保留原因 [education-enrollment-f20]。我这边依赖的资料主要是培养方案、先修关系、教室容量和教师排班 [education-enrollment-f21]。\n\n但流程写清楚不等于执行顺畅。学生选中后才发现先修课或教室冲突，说明冲突校验这一步的位置和责任交接还有问题——是校验前置到选课前，还是选课中实时拦截，这涉及规则由谁定、异常退回给谁，不是我排课专员能单方面决定的。\n\n我想先确认：这次改进是只动校验环节，还是连名单确认后的调整交接一起改？另外，退回原因目前是否真的逐条留痕，我尚未核实，需要和秦芮对一下系统侧的实际记录情况。",
+      "at": "2026-11-05T09:30:19.369Z",
+      "factIds": [
+        "education-enrollment-f20",
+        "education-enrollment-f21"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "f52376ef-8ab9-41c5-b794-8fef0d91e38b",
+        "at": "2026-11-05T09:30:19.369Z",
+        "durationMs": 1939,
+        "usage": {
+          "prompt_tokens": 906,
+          "completion_tokens": 221,
+          "total_tokens": 1127
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "69c15c99-f7c9-409b-a165-679e152945df",
+          "at": "2026-11-05T09:30:17.430Z",
+          "durationMs": 1086,
+          "usage": {
+            "prompt_tokens": 438,
+            "completion_tokens": 42,
+            "total_tokens": 480
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-21",
+      "speaker": "user",
+      "characterId": "education-enrollment-r2",
+      "text": "哪些操作必须人工审批，谁有权限？",
+      "at": "2026-11-05T09:30:24.837Z"
+    },
+    {
+      "id": "turn-22",
+      "speaker": "character",
+      "characterId": "education-enrollment-r2",
+      "text": "按我这边能确认的边界：我可以整理、校核、发起复核，但不能代替教学质量专员做专业签核，也不能自行批准“冲突检查与方案建议，不自动改变培养计划”以外的操作 [education-enrollment-f22]。所以凡是涉及培养计划变更、规则版本取舍、超出建议范围的调整，都必须走人工审批，签核权在教学质量专员那边。\n\n规则本身由业务负责人维护，按生效日期和适用范围选版本；遇到规则冲突，我要把两个版本一并附给教学质量专员，不能自己合并或挑宽松条款 [education-enrollment-f24]。\n\n不过具体审批节点设在哪一步、退回后由谁复核、名单确认后的调整算不算越界，这些流程交接细节我尚未核实，需要和傅景对审核边界、和秦芮对系统里的审批留痕。你们这次是想把审批点前移到选课前，还是维持现状只补留痕？这直接决定我这边交接材料怎么准备。",
+      "at": "2026-11-05T09:30:24.837Z",
+      "factIds": [
+        "education-enrollment-f22",
+        "education-enrollment-f24"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "880c351e-d721-4254-aba9-f94b8e96e1fa",
+        "at": "2026-11-05T09:30:24.837Z",
+        "durationMs": 2461,
+        "usage": {
+          "prompt_tokens": 1188,
+          "completion_tokens": 228,
+          "total_tokens": 1416
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "ea679663-4b3b-489f-9c28-ba8d7ed3bd0e",
+          "at": "2026-11-05T09:30:22.376Z",
+          "durationMs": 1033,
+          "usage": {
+            "prompt_tokens": 687,
+            "completion_tokens": 24,
+            "total_tokens": 711
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-23",
+      "speaker": "user",
+      "characterId": "education-enrollment-r2",
+      "text": "交接时需要什么，责任从何时转移？",
+      "at": "2026-11-05T09:30:30.281Z"
+    },
+    {
+      "id": "turn-24",
+      "speaker": "character",
+      "characterId": "education-enrollment-r2",
+      "text": "交接这块我按执行条件说：至少要有业务编号、当前版本、处理状态、未解决事项和接手人，对方确认接手，我这边的待办才算结束，只发一条消息不算完成 [education-enrollment-f23]。所以责任转移的时点不是“我发出去了”，而是“接手人确认接”。\n\n异常处理也一样：我先分派给实际处理人，超过约定时限再升级到教务主任；跨岗问题不能只写“已转交”，必须写明下一责任人 [education-enrollment-f25]。这两条是我能守住的边界，但“约定时限”具体多长、升级由谁触发，我尚未核实，需要和顾明岚确认。\n\n想反问一句：这次改进是要把交接字段固化进系统待办，还是仍靠人工记录？如果只补留痕不改待办归属，责任转移还是容易扯皮，这直接影响我这边材料怎么准备。",
+      "at": "2026-11-05T09:30:30.281Z",
+      "factIds": [
+        "education-enrollment-f23",
+        "education-enrollment-f25"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "b59590d1-b914-4d5d-98e1-aae943e1790d",
+        "at": "2026-11-05T09:30:30.281Z",
+        "durationMs": 2153,
+        "usage": {
+          "prompt_tokens": 1427,
+          "completion_tokens": 219,
+          "total_tokens": 1646
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "77e3ff3e-29a8-4fe0-b8be-aebe6fd7c016",
+          "at": "2026-11-05T09:30:28.128Z",
+          "durationMs": 883,
+          "usage": {
+            "prompt_tokens": 941,
+            "completion_tokens": 18,
+            "total_tokens": 959
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-25",
+      "speaker": "user",
+      "characterId": "education-enrollment-r3",
+      "text": "目前用了哪些系统和工具？",
+      "at": "2026-11-05T09:30:56.226Z"
+    },
+    {
+      "id": "turn-26",
+      "speaker": "character",
+      "characterId": "education-enrollment-r3",
+      "text": "目前明确在用的是教务系统、场地预约和学籍库三套，账号权限各自独立维护，业务状态还没有统一视图 [education-enrollment-f30]。这意味着我这边做数据口径和接口治理时，没法靠一个入口判断某门课、某个教室、某个学生的实时状态，排课选课冲突的核验只能分散在各系统里做。\n\n我想先跟你确认：你说的“工具”是指这三套之外还有没有辅助工具，比如线下表格或临时脚本？这部分我尚未核实，需要你补充。另外，如果后续要推进统一视图，涉及跨系统权限和接口改造，超出我单方能定的范围，得走审批。建议先把“哪些状态字段必须统一、以哪个系统为准”列成待验证清单，再谈集成。",
+      "at": "2026-11-05T09:30:56.226Z",
+      "factIds": [
+        "education-enrollment-f30"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "31c7fdba-5cbd-4264-be7c-acd9c75e43dc",
+        "at": "2026-11-05T09:30:56.226Z",
+        "durationMs": 2320,
+        "usage": {
+          "prompt_tokens": 924,
+          "completion_tokens": 181,
+          "total_tokens": 1105
+        },
+        "attemptCount": 2,
+        "attempts": [
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "148ee22b-45d1-40c4-a465-ca0340c17758",
+            "at": "2026-11-05T09:30:53.905Z",
+            "durationMs": 1794,
+            "usage": {
+              "prompt_tokens": 848,
+              "completion_tokens": 159,
+              "total_tokens": 1007
+            }
+          },
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "31c7fdba-5cbd-4264-be7c-acd9c75e43dc",
+            "at": "2026-11-05T09:30:56.226Z",
+            "durationMs": 2320,
+            "usage": {
+              "prompt_tokens": 924,
+              "completion_tokens": 181,
+              "total_tokens": 1105
+            }
+          }
+        ],
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "01d566dc-0ac4-487a-9165-0f75eb9b5f7f",
+          "at": "2026-11-05T09:30:52.111Z",
+          "durationMs": 929,
+          "usage": {
+            "prompt_tokens": 412,
+            "completion_tokens": 12,
+            "total_tokens": 424
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-27",
+      "speaker": "user",
+      "characterId": "education-enrollment-r3",
+      "text": "数据有哪些字段、口径或质量问题？",
+      "at": "2026-11-05T09:31:01.834Z"
+    },
+    {
+      "id": "turn-28",
+      "speaker": "character",
+      "characterId": "education-enrollment-r3",
+      "text": "从我这边的数据口径看，最突出的问题是课程新旧代码并存，跨学院学生权限和容量规则也不一致 [education-enrollment-f31]。这直接影响排课选课核验：同一门课可能因代码版本不同被当成两门，容量和权限判断也会因学院而异，冲突结果就不可靠。\n\n我建议先校验“培养方案、先修关系、教室容量、教师排班”里的主编号、事件时间和版本字段；有歧义的记录进人工修复队列，不进入自动推荐样本 [education-enrollment-f33]。这样能保证进入自动核验的数据是干净的。\n\n需要你澄清：你说的“质量问题”是指字段缺失、重复，还是口径不一致？我尚未核实具体分布。另外，统一主编号和跨学院规则涉及各学院确认，超出我单方能定的范围，得走审批。",
+      "at": "2026-11-05T09:31:01.834Z",
+      "factIds": [
+        "education-enrollment-f31",
+        "education-enrollment-f33"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "267d3af1-ddd2-4679-8ae2-75f4d51dbfca",
+        "at": "2026-11-05T09:31:01.834Z",
+        "durationMs": 1850,
+        "usage": {
+          "prompt_tokens": 1124,
+          "completion_tokens": 204,
+          "total_tokens": 1328
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "331e0789-c939-45cc-ba58-4026e7cc5a01",
+          "at": "2026-11-05T09:30:59.984Z",
+          "durationMs": 721,
+          "usage": {
+            "prompt_tokens": 619,
+            "completion_tokens": 18,
+            "total_tokens": 637
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-29",
+      "speaker": "user",
+      "characterId": "education-enrollment-r3",
+      "text": "有哪些接口可用，能读还是能写？",
+      "at": "2026-11-05T09:31:07.642Z"
+    },
+    {
+      "id": "turn-30",
+      "speaker": "character",
+      "characterId": "education-enrollment-r3",
+      "text": "目前我这边能确认的接口能力是：可读课程和冲突，不能自动替学生选课或修改成绩 [education-enrollment-f32]。也就是说，读侧可以支撑排课选课前的冲突核验，写侧没有授权，选课结果和成绩变更仍必须走原有业务入口和人工操作。\n\n这对我负责的数据口径与接口治理影响很直接：如果后续想把冲突核验前置到学生选课之前，读接口够用；但任何“自动调整选课结果”的设想都超出当前接口边界，需要单独评估权限和审批，不是我单方能定的。\n\n需要你澄清：你说的“可用接口”是指现有已开放的，还是希望新增的？新增部分我尚未核实，建议先把需要读的字段和调用频率列成待验证清单，再判断是否值得走集成改造。",
+      "at": "2026-11-05T09:31:07.642Z",
+      "factIds": [
+        "education-enrollment-f32"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "186c54ee-645d-4cfa-ad89-4b3b4a2e0270",
+        "at": "2026-11-05T09:31:07.642Z",
+        "durationMs": 1844,
+        "usage": {
+          "prompt_tokens": 1276,
+          "completion_tokens": 196,
+          "total_tokens": 1472
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "97a7061c-1ac4-4b28-b131-e72d1462bbcf",
+          "at": "2026-11-05T09:31:05.798Z",
+          "durationMs": 1248,
+          "usage": {
+            "prompt_tokens": 850,
+            "completion_tokens": 12,
+            "total_tokens": 862
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-31",
+      "speaker": "user",
+      "characterId": "education-enrollment-r3",
+      "text": "数据多久更新，过期信息如何识别？",
+      "at": "2026-11-05T09:31:15.035Z"
+    },
+    {
+      "id": "turn-32",
+      "speaker": "character",
+      "characterId": "education-enrollment-r3",
+      "text": "更新节奏这块，本次试点计划是每 15 分钟更新已授权的业务状态，原始资料按版本更新 [education-enrollment-f34]。所以排课选课核验时，读到的状态最多滞后一个周期，不能当实时承诺用。\n\n过期识别我这边按“超过一个更新周期就标为待刷新”处理，这类记录不能直接进入自动核验结论，得提示人工确认 [education-enrollment-f34]。这跟我负责的数据口径直接相关：待刷新状态必须和正常状态在界面上可区分，否则一线会把旧数据当准的。\n\n需要你澄清两点：一是“已授权”的范围具体包含哪些业务状态，我尚未核实；二是待刷新记录是只提示还是阻断选课，这涉及规则和审批，不是我单方能定的。建议先把这两项列成待验证清单，再谈验收口径。",
+      "at": "2026-11-05T09:31:15.035Z",
+      "factIds": [
+        "education-enrollment-f34"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "7aca3f79-662e-4ec0-b44a-1361b55047cd",
+        "at": "2026-11-05T09:31:15.035Z",
+        "durationMs": 2010,
+        "usage": {
+          "prompt_tokens": 1518,
+          "completion_tokens": 203,
+          "total_tokens": 1721
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "06e95a72-0e38-464b-94fd-088106813581",
+          "at": "2026-11-05T09:31:13.025Z",
+          "durationMs": 978,
+          "usage": {
+            "prompt_tokens": 1072,
+            "completion_tokens": 12,
+            "total_tokens": 1084
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-33",
+      "speaker": "user",
+      "characterId": "education-enrollment-r3",
+      "text": "系统故障或接口中断时怎么办？",
+      "at": "2026-11-05T09:31:21.078Z"
+    },
+    {
+      "id": "turn-34",
+      "speaker": "character",
+      "characterId": "education-enrollment-r3",
+      "text": "接口中断这块，我这边有明确的降级口径：继续使用带时间戳的上一份只读快照，并在界面上显示“暂未更新”；重连后按业务编号去重补齐，不反复触发同一待办，现有人工流程照常运行 [education-enrollment-f35]。\n\n这对排课选课核验的影响是：中断期间读到的状态是快照，不是实时值，一线必须能看到时间戳和“暂未更新”标识，不能把快照当准的去做冲突结论。去重补齐按业务编号做，是为了避免同一门课或同一个待办被重复推送，干扰排课专员和辅导员。\n\n需要你澄清两点：一是快照保留多久、覆盖哪些业务状态，我尚未核实；二是中断期间是否允许继续做选课前置核验，还是只读展示、核验挂起，这涉及规则和审批，不是我单方能定的。建议先把这两项列成待验证清单，再谈验收口径。",
+      "at": "2026-11-05T09:31:21.078Z",
+      "factIds": [
+        "education-enrollment-f35"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "2a9c2e97-e4ff-4652-a287-b8c6116de3c5",
+        "at": "2026-11-05T09:31:21.078Z",
+        "durationMs": 2178,
+        "usage": {
+          "prompt_tokens": 1758,
+          "completion_tokens": 230,
+          "total_tokens": 1988
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "51c5eb0f-6ae1-4421-b746-f5941e51997e",
+          "at": "2026-11-05T09:31:18.900Z",
+          "durationMs": 897,
+          "usage": {
+            "prompt_tokens": 1300,
+            "completion_tokens": 12,
+            "total_tokens": 1312
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-35",
+      "speaker": "user",
+      "characterId": "education-enrollment-r4",
+      "text": "有哪些安全、合规或业务红线？",
+      "at": "2026-11-05T09:31:31.389Z"
+    },
+    {
+      "id": "turn-36",
+      "speaker": "character",
+      "characterId": "education-enrollment-r4",
+      "text": "从我的职责看，红线主要落在权限和留痕两块。第一，培养方案、先修关系、教室容量、教师排班这些数据只有授权业务岗位能看，不能借用他人账号，这条是硬约束 [education-enrollment-f41]。第二，课程资格和公平分配必须保留依据，特殊申请要由教务确认，不能由系统或一线人员自行放行 [education-enrollment-f40]。涉及最终决定、对外承诺或资产变更的，必须走对应审批人，我这边只能做风险识别和审核边界建议，不能替代审批。\n\n需要你澄清一点：这次试点里，AI 给出的冲突核验结果算“建议”还是算“决定”？如果算决定，谁签字、留什么证据，目前尚未核实。我建议先按“建议+人工确认”设计，但这只是待验证假设，得和顾明岚、秦芮对齐后再定。",
+      "at": "2026-11-05T09:31:31.389Z",
+      "factIds": [
+        "education-enrollment-f41",
+        "education-enrollment-f40"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "7fe6f56e-c627-458c-a191-79135c4ca3cc",
+        "at": "2026-11-05T09:31:31.389Z",
+        "durationMs": 2398,
+        "usage": {
+          "prompt_tokens": 906,
+          "completion_tokens": 214,
+          "total_tokens": 1120
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "94535bc4-93d2-428a-910d-13adb5d19c89",
+          "at": "2026-11-05T09:31:28.991Z",
+          "durationMs": 1096,
+          "usage": {
+            "prompt_tokens": 475,
+            "completion_tokens": 42,
+            "total_tokens": 517
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-37",
+      "speaker": "user",
+      "characterId": "education-enrollment-r4",
+      "text": "怎么验收成功？试点标准是什么？",
+      "at": "2026-11-05T09:31:59.537Z"
+    },
+    {
+      "id": "turn-38",
+      "speaker": "character",
+      "characterId": "education-enrollment-r4",
+      "text": "验收我这边盯两条线。业务线看一个专业试点：时空冲突识别率 100%，人工调整工时下降 30% [education-enrollment-f42]；合规线同步检查课程资格和公平分配是否保留依据、特殊申请是否由教务确认 [education-enrollment-f42]。这两条不是并列参考，合规线一旦触发停止条件，就暂停试点并由负责人复盘 [education-enrollment-f42]。\n\n我关心的是：识别率 100% 由谁核验、样本怎么取、误报算不算失败，这些目前尚未核实。另外试点原始资料按授权范围保存，本轮评价记录暂保留 90 天，期满由我复核删除或归档，真实期限还须按组织规则另行确定 [education-enrollment-f43]。建议先和顾明岚确认试点范围与签字人，再和秦芮对齐数据口径，否则验收结论我无法背书。",
+      "at": "2026-11-05T09:31:59.537Z",
+      "factIds": [
+        "education-enrollment-f42",
+        "education-enrollment-f43"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "6260f7c1-1237-4cc4-87ef-4bbfc0a34f75",
+        "at": "2026-11-05T09:31:59.537Z",
+        "durationMs": 1888,
+        "usage": {
+          "prompt_tokens": 1178,
+          "completion_tokens": 213,
+          "total_tokens": 1391
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "13a75118-c29e-42c2-bfa9-e4cd89a52eaf",
+          "at": "2026-11-05T09:31:57.649Z",
+          "durationMs": 1375,
+          "usage": {
+            "prompt_tokens": 715,
+            "completion_tokens": 24,
+            "total_tokens": 739
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-39",
+      "speaker": "user",
+      "characterId": "education-enrollment-r4",
+      "text": "哪些情况需要兜底，怎样转人工？",
+      "at": "2026-11-05T09:32:07.074Z"
+    },
+    {
+      "id": "turn-40",
+      "speaker": "character",
+      "characterId": "education-enrollment-r4",
+      "text": "从我的职责看，兜底不是“出问题就找人”，而是要把触发条件和责任交接写清楚。按现有规则，出现“实训室设备维护占用场地，排课表仍把它当作可用教室”、资料缺少依据、两个版本冲突或关键系统不可用时，应转人工 [education-enrollment-f44]。转的时候必须标注触发原因、接手人和确认时间，不能只给一句模糊提醒 [education-enrollment-f44]。\n\n我关心的是：接手人按什么岗位定、确认时间以谁的系统记录为准，这两点目前尚未核实。建议先和唐映秋对齐交接责任、和秦芮对齐系统不可用的判定口径，再和顾明岚确认试点期间谁有权关闭兜底工单。这些只是待验证假设，不能替代审批。",
+      "at": "2026-11-05T09:32:07.074Z",
+      "factIds": [
+        "education-enrollment-f44"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "eecd326d-ba53-49e6-8736-d56047995e48",
+        "at": "2026-11-05T09:32:07.074Z",
+        "durationMs": 1825,
+        "usage": {
+          "prompt_tokens": 1430,
+          "completion_tokens": 182,
+          "total_tokens": 1612
+        },
+        "attemptCount": 2,
+        "attempts": [
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "64bef4e9-0c20-48b2-b1c5-4a305011f9e1",
+            "at": "2026-11-05T09:32:05.249Z",
+            "durationMs": 1961,
+            "usage": {
+              "prompt_tokens": 1354,
+              "completion_tokens": 165,
+              "total_tokens": 1519
+            }
+          },
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "eecd326d-ba53-49e6-8736-d56047995e48",
+            "at": "2026-11-05T09:32:07.074Z",
+            "durationMs": 1825,
+            "usage": {
+              "prompt_tokens": 1430,
+              "completion_tokens": 182,
+              "total_tokens": 1612
+            }
+          }
+        ],
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "9cbcac6c-41cc-4753-9786-986dacbcb7ed",
+          "at": "2026-11-05T09:32:03.288Z",
+          "durationMs": 849,
+          "usage": {
+            "prompt_tokens": 955,
+            "completion_tokens": 12,
+            "total_tokens": 967
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-41",
+      "speaker": "user",
+      "characterId": "education-enrollment-r4",
+      "text": "审计需要什么凭证，怎么追溯修改？",
+      "at": "2026-11-05T09:32:13.221Z"
+    },
+    {
+      "id": "turn-42",
+      "speaker": "character",
+      "characterId": "education-enrollment-r4",
+      "text": "审计凭证我按“能重建一次处理”来要求：业务编号、资料版本、事实引用、建议结果、人工改动和签核人都要留 [education-enrollment-f45]。追溯修改时，要能从“教学计划 → 排课 → 选课 → 冲突校验 → 调整 → 名单确认”这条链上定位到具体环节和改动人，而不是只看最终名单 [education-enrollment-f45]。账号口令和不必要的个人信息不记录 [education-enrollment-f45]。\n\n我关心的是：人工改动由谁在哪个环节录入、签核人按岗位还是按姓名记，目前尚未核实。留存期限上，本轮评价记录暂保留 90 天，期满由我复核删除或归档，真实期限还须按组织规则另行确定 [education-enrollment-f43]。建议先和秦芮对齐字段与版本口径，再和唐映秋确认交接时的录入责任，否则审计时我无法背书。",
+      "at": "2026-11-05T09:32:13.221Z",
+      "factIds": [
+        "education-enrollment-f45",
+        "education-enrollment-f43"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "d296ad05-2438-4958-82a9-9d35ae5a3c4a",
+        "at": "2026-11-05T09:32:13.221Z",
+        "durationMs": 2432,
+        "usage": {
+          "prompt_tokens": 1639,
+          "completion_tokens": 223,
+          "total_tokens": 1862
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "36e3094f-fcae-4bdf-8e5a-16ab7830ee28",
+          "at": "2026-11-05T09:32:10.789Z",
+          "durationMs": 878,
+          "usage": {
+            "prompt_tokens": 1163,
+            "completion_tokens": 18,
+            "total_tokens": 1181
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-43",
+      "speaker": "user",
+      "characterId": "education-enrollment-r5",
+      "text": "跨部门交接有哪些冲突？",
+      "at": "2026-11-05T09:32:37.055Z"
+    },
+    {
+      "id": "turn-44",
+      "speaker": "character",
+      "characterId": "education-enrollment-r5",
+      "text": "跨部门交接的冲突，从我负责的服务解释与反馈闭环看，最直接的是各岗关注点不一致：教师关心连堂，学生关心毕业要求，教务关心场地容量 [education-enrollment-f50]。这意味着同一门课在交接时，各方判断“排得对不对”的口径不同，学生选中后才发现冲突，投诉往往先落到我这边解释。另一个隐患是统计口径：需要分别记录各岗完成时间，试点指标固定分母、排除规则和统计周期，不能把同一业务拆成多次“成功”提高比例 [education-enrollment-f53]，否则反馈闭环里我无法向学生和教师给出可信解释。具体到交接环节的责任划分和异常单据流转，我尚未核实，建议向唐映秋确认流程交接细节、向林亦舟确认一线异常类型。我想先明确：这次试点是否把“学生选中后才发现冲突”的反馈作为验收观测点？这直接决定我这边要准备哪些解释口径和反馈记录。",
+      "at": "2026-11-05T09:32:37.055Z",
+      "factIds": [
+        "education-enrollment-f50",
+        "education-enrollment-f53"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "f2dd7913-309a-41ec-9436-6870760bdafb",
+        "at": "2026-11-05T09:32:37.055Z",
+        "durationMs": 2479,
+        "usage": {
+          "prompt_tokens": 983,
+          "completion_tokens": 227,
+          "total_tokens": 1210
+        },
+        "attemptCount": 2,
+        "attempts": [
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "fd3ad053-4e84-4752-8be9-6de4e16a0b92",
+            "at": "2026-11-05T09:32:34.576Z",
+            "durationMs": 2173,
+            "usage": {
+              "prompt_tokens": 907,
+              "completion_tokens": 187,
+              "total_tokens": 1094
+            }
+          },
+          {
+            "provider": "DeepSeek",
+            "model": "deepseek-flash",
+            "requestId": "f2dd7913-309a-41ec-9436-6870760bdafb",
+            "at": "2026-11-05T09:32:37.055Z",
+            "durationMs": 2479,
+            "usage": {
+              "prompt_tokens": 983,
+              "completion_tokens": 227,
+              "total_tokens": 1210
+            }
+          }
+        ],
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "b7cf2654-e4fe-43d5-a26b-3e0e7e35b140",
+          "at": "2026-11-05T09:32:32.403Z",
+          "durationMs": 657,
+          "usage": {
+            "prompt_tokens": 438,
+            "completion_tokens": 24,
+            "total_tokens": 462
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-45",
+      "speaker": "user",
+      "characterId": "education-enrollment-r5",
+      "text": "有多少单、花多久，有统计样本吗？",
+      "at": "2026-11-05T09:32:44.045Z"
+    },
+    {
+      "id": "turn-46",
+      "speaker": "character",
+      "characterId": "education-enrollment-r5",
+      "text": "有基线，但只能回答“量”和“采集方式”，不能直接回答“花多久”。目前可用工作量基线是每学期 420 门次课程、开学周日均 120 个调整请求 [education-enrollment-f51]；服务侧会逐笔采集交接等待和重新联系次数，且不能用发送通知数量代替实际完成量 [education-enrollment-f51]。至于单笔处理时长，我这边尚未核实，不能拿日均请求数倒推。\n\n从服务解释与反馈闭环看，我关心的是：统计样本是否按固定分母、排除规则和统计周期来算，各岗完成时间是否分别记录 [education-enrollment-f53]。否则同一业务被拆成多次“成功”，我向学生和教师解释时口径就站不住。建议先明确试点观测周期和样本范围，再向秦芮核实系统能否逐笔留痕；这是待验证假设，不是已定方案。",
+      "at": "2026-11-05T09:32:44.045Z",
+      "factIds": [
+        "education-enrollment-f51",
+        "education-enrollment-f53"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "f2204105-731b-4bf2-b772-c52aef4612bb",
+        "at": "2026-11-05T09:32:44.045Z",
+        "durationMs": 1956,
+        "usage": {
+          "prompt_tokens": 1197,
+          "completion_tokens": 219,
+          "total_tokens": 1416
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "c7c98bd4-4d7f-484a-9d25-aad8a2865048",
+          "at": "2026-11-05T09:32:42.088Z",
+          "durationMs": 875,
+          "usage": {
+            "prompt_tokens": 694,
+            "completion_tokens": 18,
+            "total_tokens": 712
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-47",
+      "speaker": "user",
+      "characterId": "education-enrollment-r5",
+      "text": "客户投诉或反馈如何处理？",
+      "at": "2026-11-05T09:32:51.148Z"
+    },
+    {
+      "id": "turn-48",
+      "speaker": "character",
+      "characterId": "education-enrollment-r5",
+      "text": "投诉和反馈我这边按一条主线走：先关联原业务编号和当时使用的资料版本，再查实际交接是否完成，而不是先解释“系统没问题” [education-enrollment-f54]。争议由我受理、排课专员核对，未经确认我不会向学生或教师承诺赔偿或结果 [education-enrollment-f54]，这条边界我必须守住。\n\n试点期间每周会收集辅导员、排课专员和我这边的误判例子与未解决问题，由教务主任确认改进负责人，先复测“一个专业试点、时空冲突识别率 100%、人工调整工时下降 30%”再更新规则版本 [education-enrollment-f55]。所以反馈闭环要能逐笔留痕，否则我无法判断是规则问题还是交接问题。需要你澄清：试点是否把“学生选中后才发现冲突”的投诉作为验收观测点？这决定我准备哪些解释口径。",
+      "at": "2026-11-05T09:32:51.148Z",
+      "factIds": [
+        "education-enrollment-f54",
+        "education-enrollment-f55"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "d6cf5af7-eaa6-4d0f-9bc5-8a689d35074d",
+        "at": "2026-11-05T09:32:51.148Z",
+        "durationMs": 1912,
+        "usage": {
+          "prompt_tokens": 1446,
+          "completion_tokens": 209,
+          "total_tokens": 1655
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "b3a55e0c-ff8f-4094-92fa-053557fe3b7c",
+          "at": "2026-11-05T09:32:49.236Z",
+          "durationMs": 1041,
+          "usage": {
+            "prompt_tokens": 936,
+            "completion_tokens": 24,
+            "total_tokens": 960
+          },
+          "attemptCount": 1
+        }
+      }
+    },
+    {
+      "id": "turn-49",
+      "speaker": "user",
+      "characterId": "education-enrollment-r5",
+      "text": "本次范围是什么，哪些事情不能自动做？",
+      "at": "2026-11-05T09:32:59.430Z"
+    },
+    {
+      "id": "turn-50",
+      "speaker": "character",
+      "characterId": "education-enrollment-r5",
+      "text": "范围我只能从我负责的服务解释与反馈闭环说：冲突检查与方案建议可以做，但不自动改变培养计划 [education-enrollment-f52]，这条是硬边界，越过去就不是我能决定的。反馈处理上，客户或下游反馈要先关联原业务编号和当时使用的资料版本，再查实际交接是否完成；争议由我受理、排课专员核对，未经确认我不承诺赔偿或结果 [education-enrollment-f54]。\n\n至于试点覆盖哪些专业、哪些环节纳入自动建议、审批由谁签，我尚未核实，需要向顾明岚确认试点决策、向傅景确认审核边界。我关心的是：范围一旦定窄，学生选中后才发现冲突的投诉仍会落到我这边解释，所以验收观测点里应包含这类反馈；这是待验证建议，不是已定方案。",
+      "at": "2026-11-05T09:32:59.430Z",
+      "factIds": [
+        "education-enrollment-f52",
+        "education-enrollment-f54"
+      ],
+      "mode": "在线模型对话",
+      "audit": {
+        "provider": "DeepSeek",
+        "model": "deepseek-flash",
+        "requestId": "d09c706e-3562-4c4a-ae0f-70e691fe233c",
+        "at": "2026-11-05T09:32:59.430Z",
+        "durationMs": 2261,
+        "usage": {
+          "prompt_tokens": 1635,
+          "completion_tokens": 195,
+          "total_tokens": 1830
+        },
+        "attemptCount": 1,
+        "selection": {
+          "provider": "DeepSeek",
+          "model": "deepseek-flash",
+          "requestId": "2df3ca02-86d6-49fe-ba53-74c2f9c0d013",
+          "at": "2026-11-05T09:32:57.169Z",
+          "durationMs": 873,
+          "usage": {
+            "prompt_tokens": 1172,
+            "completion_tokens": 18,
+            "total_tokens": 1190
+          },
+          "attemptCount": 1
+        }
+      }
+    }
+  ],
+  "methodContext": {
+    "buyer": "顾明岚",
+    "operator": "林亦舟"
+  },
+  "framework": "基于 fde-simulation 的 workflow-decomposition、outcome-risk-matrix 与 4-source-convergence 框架进行需求归纳。",
+  "analysis": {
+    "summary": "已采集事实覆盖目标、流程、验收、预算、权限、数据口径、接口、降级、审计与反馈闭环，但访谈材料主要来自教务系统工程师、教学质量专员和专业课程负责人，排课专员、辅导员、教务主任的一手访谈尚未展开。可确认的业务瓶颈集中在选课前的冲突校验：学生选中后才发现先修课或教室冲突，且实训室维护占用场地未被排课表反映。数据侧存在课程新旧代码并存、跨学院权限与容量规则不一致，接口仅可读不可写，状态每15分钟更新且中断时用只读快照。切入点应优先放在“选课前冲突前置提示+人工复核”，而非自动改选课结果；验收口径（识别率100%、工时下降30%）已提出，但核验人、样本、误报处理尚未确认。",
+    "hypotheses": [
+      {
+        "title": "选课前冲突前置提示是首要切入点",
+        "owner": "排课专员（待确认）",
+        "priority": "P0",
+        "reasoning": "辅导员反映学生选中后才发现先修课或教室冲突，且实训室维护占用场地仍被当作可用教室，说明冲突信息未在选课决策点暴露。系统侧可读课程和冲突、不可写选课结果，支持“只提示不代选”的定位。但冲突识别率100%的核验人和样本尚未确认，前置提示能否覆盖先修关系与场地占用两类冲突仍不确定。",
+        "nextStep": "取一个专业历史选课数据回放，比对前置提示命中的冲突与实际调整记录；由排课专员逐笔核对误报与漏报，人工确认后再定试点范围。",
+        "evidenceIds": [
+          "education-enrollment-f10",
+          "education-enrollment-f11",
+          "education-enrollment-f32",
+          "education-enrollment-f05"
+        ]
+      },
+      {
+        "title": "数据口径治理须先于自动推荐",
+        "owner": "教务系统工程师",
+        "priority": "P0",
+        "reasoning": "课程新旧代码并存、跨学院学生权限和容量规则不同，同一门课可能被当成两门，冲突结果不可靠。工程师已提出先校验主编号、事件时间和版本字段，歧义记录进人工修复队列、不进自动推荐样本。但具体字段缺失与重复分布尚未核实，统一主编号涉及各学院确认，超出单方权限。",
+        "nextStep": "抽取一个专业的课程、先修、容量、教师排班样本，统计主编号与版本字段的歧义比例；由工程师出数据质量清单，交教务主任确认修复责任与审批路径。",
+        "evidenceIds": [
+          "education-enrollment-f31",
+          "education-enrollment-f33",
+          "education-enrollment-f30"
+        ]
+      },
+      {
+        "title": "人工复核与兜底交接需明确触发条件",
+        "owner": "排课专员与教学质量专员（待确认）",
+        "priority": "P0",
+        "reasoning": "规则要求出现场地维护占用、资料缺依据、版本冲突或系统不可用时转人工，并标注触发原因、接手人和确认时间；辅导员也要求建议显示原记录和待确认字段，错误结果不得覆盖原记录。但接手人按什么岗位定、确认时间以谁的系统记录为准尚未核实，兜底工单关闭权限也未明确。",
+        "nextStep": "与排课专员、教学质量专员共同列出兜底触发清单和接手岗位，用历史异常单据演练一次交接，确认“对方确认接手才结束待办”的可操作性。",
+        "evidenceIds": [
+          "education-enrollment-f44",
+          "education-enrollment-f15",
+          "education-enrollment-f25",
+          "education-enrollment-f23"
+        ]
+      },
+      {
+        "title": "接口只读与快照降级决定试点边界",
+        "owner": "教务系统工程师",
+        "priority": "P1",
+        "reasoning": "接口可读课程和冲突，不能自动替学生选课或修改成绩；状态每15分钟更新，超过一个周期标为待刷新；中断时用带时间戳的只读快照并显示暂未更新，重连按业务编号去重补齐。这支持“建议+人工确认”的定位，但快照保留多久、覆盖哪些状态、中断期间是否允许继续前置核验尚未核实。",
+        "nextStep": "由工程师列出可读字段、调用频率和快照覆盖范围清单；模拟一次接口中断，验证待刷新标识与去重补齐是否可被一线识别，再定是否纳入首期。",
+        "evidenceIds": [
+          "education-enrollment-f32",
+          "education-enrollment-f34",
+          "education-enrollment-f35"
+        ]
+      },
+      {
+        "title": "验收指标需固定分母与核验责任人",
+        "owner": "教务主任与教学质量专员（待确认）",
+        "priority": "P1",
+        "reasoning": "目标为每学期360个冲突降到80个、调课3天降到1天，试点验收为识别率100%、人工调整工时下降30%；基线为420门次课程、开学周日均120个调整请求。但识别率由谁核验、样本怎么取、误报是否算失败尚未核实，且不能把同一业务拆成多次成功提高比例。",
+        "nextStep": "由教务主任确认试点专业、观测周期和签字人；教学质量专员明确识别率核验方法与误报处理规则，形成书面验收口径后再启动回放。",
+        "evidenceIds": [
+          "education-enrollment-f00",
+          "education-enrollment-f02",
+          "education-enrollment-f12",
+          "education-enrollment-f53"
+        ]
+      },
+      {
+        "title": "反馈闭环应纳入学生选课体验观测",
+        "owner": "专业课程负责人",
+        "priority": "P2",
+        "reasoning": "教师关心连堂、学生关心毕业要求、教务关心场地容量，各方判断排得对不对的口径不同，投诉常先落到服务解释侧。规则要求反馈关联原业务编号和资料版本，争议由专业课程负责人受理、排课专员核对。但试点是否把“学生选中后才发现冲突”的投诉作为验收观测点尚未确认。",
+        "nextStep": "与专业课程负责人确认是否将此类投诉计入观测点，并设计按业务编号关联的反馈记录模板；每周收集误判例子，由教务主任确认改进负责人。",
+        "evidenceIds": [
+          "education-enrollment-f50",
+          "education-enrollment-f54",
+          "education-enrollment-f55",
+          "education-enrollment-f52"
+        ]
+      }
+    ],
+    "followUps": [
+      "请教务主任确认：试点专业是哪一个，验收签字人是谁，识别率100%由谁核验？",
+      "请排课专员说明：当前冲突校验在选课前还是选课后执行，退回原步骤时原因如何保留？",
+      "请辅导员提供近两周调整请求的典型单据，说明哪些冲突本可在选课前提示？",
+      "请教务系统工程师确认：快照保留多久、覆盖哪些业务状态，中断期间前置核验是挂起还是只读展示？",
+      "请教学质量专员明确：AI冲突核验结果算建议还是决定，误报是否计入识别率失败？",
+      "请专业课程负责人确认：学生选中后才发现冲突的投诉是否纳入试点验收观测点？",
+      "请排课专员与辅导员对齐：兜底工单的接手人按岗位还是按姓名定，确认时间以哪个系统记录为准？",
+      "请教务主任确认：统一课程主编号和跨学院容量规则由谁审批，首期10万元预算是否覆盖该项治理？"
+    ],
+    "limitations": "本分析仅依据已采集的36条事实与现有访谈材料，排课专员、辅导员、教务主任的一手访谈尚未展开，流程各节点等待与处理时间未分别计量。识别率100%的核验方法、误报处理、快照保留期限、兜底工单关闭权限均未核实。调查覆盖率不代表验收通过，上述假设均需人工确认后方可进入试点。",
+    "audit": {
+      "provider": "DeepSeek",
+      "model": "deepseek-flash",
+      "requestId": "7044b0c2-5beb-4ad9-86ad-cfdadb4c3d5f",
+      "at": "2026-11-05T09:34:25.116Z",
+      "durationMs": 10662,
+      "usage": {
+        "prompt_tokens": 7894,
+        "completion_tokens": 1574,
+        "total_tokens": 9468
+      },
+      "attemptCount": 1
+    }
+  },
+  "methodology": {
+    "version": 1,
+    "guide": [
+      {
+        "id": "workflow-decomposition",
+        "name": "业务流程拆解",
+        "file": "frameworks/workflow-decomposition.md",
+        "question": "问题发生在哪一步，为什么要这样划分智能体？",
+        "steps": [
+          "先画人工现状泳道，写出触发、输入、8–15个处理步骤、交接和异常。",
+          "区分判断点与执行点；按使用的数据、权限、模型能力与失败方式组合执行步骤。",
+          "在不可逆动作前设置确定性校验；为低置信、缺资料、冲突和越权安排具名人工接收人。"
+        ],
+        "output": "现状流程 → 失败方式 → 智能体/工具边界 → 校验与人工升级路径"
+      },
+      {
+        "id": "outcome-risk-matrix",
+        "name": "业务结果与不可逆风险矩阵",
+        "file": "frameworks/outcome-risk-matrix.md",
+        "question": "多个需求中，先做哪个最小可验证方案？",
+        "steps": [
+          "列出3–5个候选切入点，分别说明改善的业务结果、现状基线和投入。",
+          "评估失败何时被谁看见、能否在损害前拦截、是否可以撤销；不要把模型置信度等同于业务风险。",
+          "优先选择高价值、可拦截且可恢复的切入点；高风险需硬约束和责任人否决权，价值或风险未知先补证据。"
+        ],
+        "output": "候选方案 → 价值/风险比较 → 选择与暂缓理由 → 验收指标与停止条件"
+      },
+      {
+        "id": "4-source-convergence",
+        "name": "四来源收敛",
+        "file": "frameworks/4-source-convergence.md",
+        "question": "谁说要做，哪里真的坏了，范围允许什么，技术是否可行？",
+        "steps": [
+          "Buyer：核实业务目标、预算、优先级和决定权；Operator：用最近一单还原真实操作和失败位置。",
+          "Brief：核对书面目标、范围、时间和排除项；Industry：寻找可比技术实践，并核实本项目的数据与接口差异。",
+          "检查四个视角是否指向同一瓶颈。分歧保留在问题清单：一线帮助定位故障，决策者确认价值，Brief约束范围，行业证据帮助判断可行性。"
+        ],
+        "output": "四视角陈述与来源 → 收敛/分歧 → 待核实问题 → 有边界的需求假设"
+      }
+    ],
+    "sources": [
+      {
+        "id": "buyer",
+        "name": "Buyer · 业务决策者",
+        "statement": "顾明岚",
+        "evidenceIds": [
+          "education-enrollment-f00",
+          "education-enrollment-f01",
+          "education-enrollment-f05",
+          "education-enrollment-f02",
+          "education-enrollment-f03",
+          "education-enrollment-f04"
+        ],
+        "status": "已采集角色陈述，目标和预算仍待确认"
+      },
+      {
+        "id": "brief",
+        "name": "Brief · 书面需求",
+        "statement": "我们在“排课选课与教务协作”上投入了很多人力。学生看到可选课程，但选中后才发现先修课或教室冲突。管理层希望用 AI 改善，但还没有确定优先环节、验收标准和权限边界。请你先和各岗位聊聊，找出值得验证的业务需求。",
+        "evidenceIds": [],
+        "status": "当前只有场景开场；书面Brief原文与版本待补"
+      },
+      {
+        "id": "industry",
+        "name": "Industry · 行业可行性",
+        "statement": "需要可比技术案例、数据条件和接口能力的核验材料。企业业务介绍不能证明技术可行。",
+        "evidenceIds": [],
+        "status": "待补行业实践与本项目适用性验证"
+      },
+      {
+        "id": "operator",
+        "name": "Operator · 一线使用者",
+        "statement": "林亦舟",
+        "evidenceIds": [
+          "education-enrollment-f10",
+          "education-enrollment-f12",
+          "education-enrollment-f11",
+          "education-enrollment-f15",
+          "education-enrollment-f13",
+          "education-enrollment-f14"
+        ],
+        "status": "已采集现场陈述，仍需样本与操作观察核实"
+      }
+    ],
+    "trace": [
+      {
+        "id": "REQ-1",
+        "title": "选课前冲突前置提示是首要切入点",
+        "evidenceIds": [
+          "education-enrollment-f10",
+          "education-enrollment-f11",
+          "education-enrollment-f32",
+          "education-enrollment-f05"
+        ],
+        "derivation": "辅导员反映学生选中后才发现先修课或教室冲突，且实训室维护占用场地仍被当作可用教室，说明冲突信息未在选课决策点暴露。系统侧可读课程和冲突、不可写选课结果，支持“只提示不代选”的定位。但冲突识别率100%的核验人和样本尚未确认，前置提示能否覆盖先修关系与场地占用两类冲突仍不确定。",
+        "priority": "P0",
+        "decision": "候选需求；需用结果与不可逆风险矩阵比较，P0/P1/P2不等于已完成价值风险评分。",
+        "verification": "取一个专业历史选课数据回放，比对前置提示命中的冲突与实际调整记录；由排课专员逐笔核对误报与漏报，人工确认后再定试点范围。"
+      },
+      {
+        "id": "REQ-2",
+        "title": "数据口径治理须先于自动推荐",
+        "evidenceIds": [
+          "education-enrollment-f31",
+          "education-enrollment-f33",
+          "education-enrollment-f30"
+        ],
+        "derivation": "课程新旧代码并存、跨学院学生权限和容量规则不同，同一门课可能被当成两门，冲突结果不可靠。工程师已提出先校验主编号、事件时间和版本字段，歧义记录进人工修复队列、不进自动推荐样本。但具体字段缺失与重复分布尚未核实，统一主编号涉及各学院确认，超出单方权限。",
+        "priority": "P0",
+        "decision": "候选需求；需用结果与不可逆风险矩阵比较，P0/P1/P2不等于已完成价值风险评分。",
+        "verification": "抽取一个专业的课程、先修、容量、教师排班样本，统计主编号与版本字段的歧义比例；由工程师出数据质量清单，交教务主任确认修复责任与审批路径。"
+      },
+      {
+        "id": "REQ-3",
+        "title": "人工复核与兜底交接需明确触发条件",
+        "evidenceIds": [
+          "education-enrollment-f44",
+          "education-enrollment-f15",
+          "education-enrollment-f25",
+          "education-enrollment-f23"
+        ],
+        "derivation": "规则要求出现场地维护占用、资料缺依据、版本冲突或系统不可用时转人工，并标注触发原因、接手人和确认时间；辅导员也要求建议显示原记录和待确认字段，错误结果不得覆盖原记录。但接手人按什么岗位定、确认时间以谁的系统记录为准尚未核实，兜底工单关闭权限也未明确。",
+        "priority": "P0",
+        "decision": "候选需求；需用结果与不可逆风险矩阵比较，P0/P1/P2不等于已完成价值风险评分。",
+        "verification": "与排课专员、教学质量专员共同列出兜底触发清单和接手岗位，用历史异常单据演练一次交接，确认“对方确认接手才结束待办”的可操作性。"
+      },
+      {
+        "id": "REQ-4",
+        "title": "接口只读与快照降级决定试点边界",
+        "evidenceIds": [
+          "education-enrollment-f32",
+          "education-enrollment-f34",
+          "education-enrollment-f35"
+        ],
+        "derivation": "接口可读课程和冲突，不能自动替学生选课或修改成绩；状态每15分钟更新，超过一个周期标为待刷新；中断时用带时间戳的只读快照并显示暂未更新，重连按业务编号去重补齐。这支持“建议+人工确认”的定位，但快照保留多久、覆盖哪些状态、中断期间是否允许继续前置核验尚未核实。",
+        "priority": "P1",
+        "decision": "候选需求；需用结果与不可逆风险矩阵比较，P0/P1/P2不等于已完成价值风险评分。",
+        "verification": "由工程师列出可读字段、调用频率和快照覆盖范围清单；模拟一次接口中断，验证待刷新标识与去重补齐是否可被一线识别，再定是否纳入首期。"
+      },
+      {
+        "id": "REQ-5",
+        "title": "验收指标需固定分母与核验责任人",
+        "evidenceIds": [
+          "education-enrollment-f00",
+          "education-enrollment-f02",
+          "education-enrollment-f12",
+          "education-enrollment-f53"
+        ],
+        "derivation": "目标为每学期360个冲突降到80个、调课3天降到1天，试点验收为识别率100%、人工调整工时下降30%；基线为420门次课程、开学周日均120个调整请求。但识别率由谁核验、样本怎么取、误报是否算失败尚未核实，且不能把同一业务拆成多次成功提高比例。",
+        "priority": "P1",
+        "decision": "候选需求；需用结果与不可逆风险矩阵比较，P0/P1/P2不等于已完成价值风险评分。",
+        "verification": "由教务主任确认试点专业、观测周期和签字人；教学质量专员明确识别率核验方法与误报处理规则，形成书面验收口径后再启动回放。"
+      },
+      {
+        "id": "REQ-6",
+        "title": "反馈闭环应纳入学生选课体验观测",
+        "evidenceIds": [
+          "education-enrollment-f50",
+          "education-enrollment-f54",
+          "education-enrollment-f55",
+          "education-enrollment-f52"
+        ],
+        "derivation": "教师关心连堂、学生关心毕业要求、教务关心场地容量，各方判断排得对不对的口径不同，投诉常先落到服务解释侧。规则要求反馈关联原业务编号和资料版本，争议由专业课程负责人受理、排课专员核对。但试点是否把“学生选中后才发现冲突”的投诉作为验收观测点尚未确认。",
+        "priority": "P2",
+        "decision": "候选需求；需用结果与不可逆风险矩阵比较，P0/P1/P2不等于已完成价值风险评分。",
+        "verification": "与专业课程负责人确认是否将此类投诉计入观测点，并设计按业务编号关联的反馈记录模板；每周收集误判例子，由教务主任确认改进负责人。"
+      }
+    ],
+    "conclusion": "先从已采集事实形成问题假设，再约定业务结果、范围、失败控制和验收。缺少的来源标记待补，不能把六人访谈完整率当作四来源收敛或需求确认。"
+  },
+  "handoff": {
+    "reportId": "REPORT-184beec2-88e2-462a-ac18-26b91d08fff1",
+    "version": 2,
+    "sourceStage": "opportunity",
+    "targetStage": "discovery",
+    "href": "/group-training?project=education-enrollment&attemptId=9d8d2c88-c4bd-44cb-b52e-acddaad7dca2&stage=discovery",
+    "stageHref": "/group-training?project=education-enrollment&attemptId=9d8d2c88-c4bd-44cb-b52e-acddaad7dca2&stage=opportunity"
+  }
+}
