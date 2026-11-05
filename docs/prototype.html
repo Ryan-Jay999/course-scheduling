@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>排课选课与教务协作系统 · 页面原型（8 页）</title>
+<style>
+  :root {
+    --bg:#f4f6fa; --panel:#fff; --border:#e2e8f0; --text:#1e293b; --muted:#64748b;
+    --primary:#2563eb; --primary-soft:#eff6ff; --ok:#16a34a; --ok-soft:#f0fdf4;
+    --warn:#d97706; --warn-soft:#fffbeb; --danger:#dc2626; --danger-soft:#fef2f2;
+    --teal:#0d9488; --purple:#7c3aed;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Microsoft YaHei","PingFang SC",sans-serif; background:var(--bg); color:var(--text); font-size:14px; }
+  .wrap { max-width:1200px; margin:0 auto; padding:20px; }
+  header.top { background:linear-gradient(120deg,#1e3a8a,#2563eb 55%,#0d9488); color:#fff; border-radius:14px; padding:20px 24px; margin-bottom:14px; }
+  header.top h1 { font-size:20px; margin-bottom:5px; }
+  header.top p { font-size:13px; opacity:.92; line-height:1.7; }
+  nav.tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+  nav.tabs button { border:1px solid var(--border); background:#fff; color:var(--muted); border-radius:9px; padding:9px 15px; font-size:13px; cursor:pointer; font-weight:600; }
+  nav.tabs button.on { background:var(--primary); border-color:var(--primary); color:#fff; }
+  .page { display:none; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px; }
+  .page.on { display:block; }
+  .page-head { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:14px; flex-wrap:wrap; gap:8px; }
+  .page-head h2 { font-size:17px; }
+  .page-head .meta { font-size:12px; color:var(--muted); }
+  .badge { display:inline-block; font-size:11px; padding:2px 9px; border-radius:999px; font-weight:600; }
+  .b-blue { background:var(--primary-soft); color:var(--primary); } .b-green { background:var(--ok-soft); color:var(--ok); }
+  .b-warn { background:var(--warn-soft); color:var(--warn); } .b-red { background:var(--danger-soft); color:var(--danger); }
+  .b-gray { background:#f1f5f9; color:var(--muted); } .b-teal { background:#f0fdfa; color:var(--teal); } .b-purple { background:#f5f3ff; color:var(--purple); }
+  .btn { display:inline-block; background:var(--primary); color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:13px; cursor:pointer; font-weight:600; }
+  .btn.ghost { background:#fff; color:var(--primary); border:1px solid var(--primary); }
+  .btn.sm { padding:4px 11px; font-size:12px; }
+  .note { background:var(--warn-soft); border:1px solid #fde68a; color:#92400e; border-radius:9px; padding:9px 13px; font-size:12.5px; line-height:1.7; margin-bottom:12px; }
+  .note.blue { background:var(--primary-soft); border-color:#bfdbfe; color:#1e40af; }
+  .cols { display:flex; gap:12px; }
+  .col { flex:1; min-width:0; }
+  .card { border:1px solid var(--border); border-radius:10px; padding:13px 15px; margin-bottom:12px; }
+  .card h4 { font-size:13.5px; color:var(--muted); font-weight:600; margin-bottom:9px; }
+  .kpi { flex:1; border:1px solid var(--border); border-radius:10px; padding:13px 15px; }
+  .kpi .v { font-size:22px; font-weight:700; }
+  .kpi .l { font-size:12px; color:var(--muted); margin-top:3px; }
+  .kpi .d { font-size:11.5px; margin-top:5px; }
+  table.tb { width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.tb th { background:#f8fafc; color:var(--muted); text-align:left; font-weight:600; padding:7px 10px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  table.tb td { padding:7px 10px; border-bottom:1px solid #f1f5f9; line-height:1.6; }
+  table.tb tr:hover td { background:#fafcff; }
+  .bar { height:8px; background:#eef2f7; border-radius:99px; overflow:hidden; margin-top:6px; }
+  .bar i { display:block; height:100%; border-radius:99px; }
+  /* P2 课表 */
+  .tt { display:grid; grid-template-columns:56px repeat(5,1fr); gap:4px; font-size:11.5px; }
+  .tt .h { background:#f8fafc; color:var(--muted); text-align:center; padding:5px 2px; border-radius:6px; font-weight:600; }
+  .tt .c { background:#fbfdff; border:1px dashed var(--border); border-radius:6px; min-height:44px; padding:4px 6px; line-height:1.5; }
+  .tt .c.filled { background:var(--primary-soft); border:1px solid #bfdbfe; color:#1e40af; font-weight:600; }
+  .tt .c.conflict { background:var(--danger-soft); border:1px solid #fecaca; color:#991b1b; }
+  .tt .c.maint { background:repeating-linear-gradient(45deg,#fffbeb,#fffbeb 6px,#fef3c7 6px,#fef3c7 12px); border:1px solid #fde68a; color:#92400e; }
+  /* P4 流程步骤 */
+  .steps { display:flex; align-items:center; gap:0; margin-bottom:12px; flex-wrap:wrap; }
+  .steps .s { text-align:center; font-size:11.5px; color:var(--muted); }
+  .steps .dot { width:26px; height:26px; border-radius:50%; background:#e2e8f0; color:#64748b; display:flex; align-items:center; justify-content:center; margin:0 auto 4px; font-size:12px; font-weight:700; }
+  .steps .s.done .dot { background:var(--ok); color:#fff; }
+  .steps .s.cur .dot { background:var(--primary); color:#fff; box-shadow:0 0 0 4px var(--primary-soft); }
+  .steps .link { width:34px; height:2px; background:#e2e8f0; margin:13px 6px 0; }
+  /* P5 聊天 */
+  .chat { display:flex; flex-direction:column; gap:10px; }
+  .msg { max-width:82%; border-radius:12px; padding:10px 14px; font-size:13px; line-height:1.8; }
+  .msg.user { align-self:flex-end; background:var(--primary); color:#fff; border-bottom-right-radius:4px; }
+  .msg.ai { align-self:flex-start; background:#f8fafc; border:1px solid var(--border); border-bottom-left-radius:4px; }
+  .msg.ai .cite { color:var(--primary); font-size:11px; }
+  .msg.ai .hdr { font-size:11px; color:var(--muted); margin-bottom:5px; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  /* P7 时间线 */
+  .tl { position:relative; padding-left:22px; }
+  .tl::before { content:''; position:absolute; left:7px; top:4px; bottom:4px; width:2px; background:#e2e8f0; }
+  .tl .t { position:relative; margin-bottom:12px; }
+  .tl .t::before { content:''; position:absolute; left:-21px; top:4px; width:12px; height:12px; border-radius:50%; background:#fff; border:3px solid var(--primary); }
+  .tl .t.human::before { border-color:var(--warn); }
+  .tl .t.ai::before { border-color:var(--teal); }
+  footer { text-align:center; color:var(--muted); font-size:12px; padding:16px 0 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>🐢 排课选课与教务协作系统 · 页面原型</h1>
+    <p>8 个核心页面 · 对应设计方案 7 大功能模块 · 所有边界（只读提示 / 转人工留痕 / 快照降级 / 审计落库）均直接映射访谈事实 f00–f55 · 供 Demo 开发按图施工</p>
+  </header>
+  <nav class="tabs" id="tabs">
+    <button class="on" data-p="p1">P1 教务工作台</button>
+    <button data-p="p2">P2 排课操作台</button>
+    <button data-p="p3">P3 选课中心</button>
+    <button data-p="p4">P4 冲突处理工作流</button>
+    <button data-p="p5">P5 AI 教务助手</button>
+    <button data-p="p6">P6 知识图谱·数据治理</button>
+    <button data-p="p7">P7 审计追溯中心</button>
+    <button data-p="p8">P8 指标看板</button>
+  </nav>
+
+  <!-- P1 -->
+  <section class="page on" id="p1">
+    <div class="page-head">
+      <h2>教务工作台 <span class="badge b-blue">M0 全角色</span></h2>
+      <span class="meta">角色示例：顾明岚（教务主任） · 数据截至同步 2026-10-29 14:15（15 分钟周期 f34）</span>
+    </div>
+    <div class="cols" style="margin-bottom:12px;">
+      <div class="kpi"><div class="v" style="color:var(--primary)">280 → 80</div><div class="l">本学期冲突数（目标 360→80 · f00）</div><div class="bar"><i style="width:78%;background:var(--primary)"></i></div><div class="d" style="color:var(--ok)">较基线 -22.2%（固定分母口径 f53）</div></div>
+      <div class="kpi"><div class="v" style="color:var(--teal)">1.6 天</div><div class="l">调课平均处理时长（目标 3天→1天 · f00）</div><div class="bar"><i style="width:53%;background:var(--teal)"></i></div><div class="d" style="color:var(--ok)">较基线 -46.7%</div></div>
+      <div class="kpi"><div class="v" style="color:var(--warn)">-18.4%</div><div class="l">人工调整工时（目标 -30% · f02）</div><div class="bar"><i style="width:61%;background:var(--warn)"></i></div><div class="d" style="color:var(--warn)">距目标差 11.6 pp</div></div>
+      <div class="kpi"><div class="v">100%</div><div class="l">时空冲突识别率（试点专业 · f42）</div><div class="bar"><i style="width:100%;background:var(--ok)"></i></div><div class="d" style="color:var(--muted)">历史回放 + 人工复核抽样</div></div>
+    </div>
+    <div class="cols">
+      <div class="col card">
+        <h4>我的待办（按岗位路由）</h4>
+        <table class="tb">
+          <tr><th>业务编号</th><th>事项</th><th>状态</th><th>停留</th></tr>
+          <tr><td>TZ-2026-0417</td><td>实训室占用异常复核（f11）</td><td><span class="badge b-red">转人工</span></td><td>2.1h</td></tr>
+          <tr><td>TZ-2026-0412</td><td>跨学院容量规则确认</td><td><span class="badge b-warn">待接手确认</span></td><td>5.4h</td></tr>
+          <tr><td>TZ-2026-0408</td><td>新旧课程代码映射复核（f31）</td><td><span class="badge b-blue">处理中</span></td><td>1.2d</td></tr>
+          <tr><td>TZ-2026-0401</td><td>试点周报口径确认</td><td><span class="badge b-gray">已转交</span></td><td>—</td></tr>
+        </table>
+      </div>
+      <div class="col card">
+        <h4>系统状态</h4>
+        <table class="tb">
+          <tr><td>教务系统接口</td><td><span class="badge b-green">正常</span></td><td>只读（f32）</td></tr>
+          <tr><td>场地预约接口</td><td><span class="badge b-warn">延迟 1 周期</span></td><td><span class="badge b-gray">快照 14:00（f35）</span></td></tr>
+          <tr><td>学籍库接口</td><td><span class="badge b-green">正常</span></td><td>只读</td></tr>
+          <tr><td>同步周期</td><td><span class="badge b-blue">15 分钟</span></td><td>超期自动标「待刷新」</td></tr>
+        </table>
+        <div class="note blue" style="margin-top:10px;margin-bottom:0;">本页所有数字按固定分母与统计周期计算（f53），口径定义见 P8 指标看板。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P2 -->
+  <section class="page" id="p2">
+    <div class="page-head">
+      <h2>排课操作台 <span class="badge b-teal">M1 智能排课</span></h2>
+      <span class="meta">角色：唐映秋（排课专员） · 规则版本 V2.3（生效 2026-09-01，f24）</span>
+    </div>
+    <div class="cols">
+      <div class="col" style="flex:0 0 30%">
+        <div class="card">
+          <h4>约束数据源（冲突校验四输入 · f21）</h4>
+          <table class="tb">
+            <tr><td>培养方案</td><td>V3.1</td><td><span class="badge b-green">已校验</span></td></tr>
+            <tr><td>先修关系</td><td>V2.7</td><td><span class="badge b-green">已校验</span></td></tr>
+            <tr><td>教室容量</td><td>V1.9</td><td><span class="badge b-warn">2 条歧义</span></td></tr>
+            <tr><td>教师排班</td><td>V2.2</td><td><span class="badge b-green">已校验</span></td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h4>排课引擎</h4>
+          <div style="display:flex;gap:8px;margin-bottom:9px;"><button class="btn sm">▶ 运行排课</button><button class="btn ghost sm">导入上学期基线</button></div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8;">引擎：规则约束求解 + 冲突预检（确定性规则保证识别率，LLM 仅做解释与建议 · f52）<br>上轮结果：420 门次 / 软约束满足 96.2% / 硬冲突 0</div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>版本管理（f24）</h4>
+          <div style="font-size:12.5px;line-height:1.9;">规则冲突时系统附两个版本提交质量专员傅景复核，<b>不允许自动合并或选用宽松条款</b>。</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="margin-bottom:12px;">
+          <h4>周课表预览 · 2026 级软件技术专业（第 1 周）</h4>
+          <div class="tt">
+            <div class="h"></div><div class="h">周一</div><div class="h">周二</div><div class="h">周三</div><div class="h">周四</div><div class="h">周五</div>
+            <div class="h">1-2节</div><div class="c filled">Web 前端<br>实训楼 A302</div><div class="c"></div><div class="c filled">数据库<br>教学楼 201</div><div class="c"></div><div class="c"></div>
+            <div class="h">3-4节</div><div class="c"></div><div class="c filled">Java 进阶<br>实训楼 A302</div><div class="c"></div><div class="c filled">网络基础<br>教学楼 305</div><div class="c"></div>
+            <div class="h">5-6节</div><div class="c maint">实训室维护占用<br>⚠ 已标待刷新</div><div class="c"></div><div class="c conflict">容量冲突 48/45<br>转人工 TZ-0417</div><div class="c"></div><div class="c filled">软件工程<br>教学楼 201</div>
+            <div class="h">7-8节</div><div class="c"></div><div class="c filled">体育<br>操场</div><div class="c"></div><div class="c"></div><div class="c"></div>
+          </div>
+        </div>
+        <div class="note" style="margin-bottom:0;">⚠ 黄底斜纹 = 实训室设备维护占用但课表未更新（f11，触发强制转人工 f44）· 红底 = 冲突未解除，处理入口见 P4 工作流。本操作台不提供"绕过冲突直接发布"按钮（对应权限红线 f22）。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P3 -->
+  <section class="page" id="p3">
+    <div class="page-head">
+      <h2>选课中心 <span class="badge b-green">M2 选课与冲突预警</span></h2>
+      <span class="meta">角色：学生 · 提示口径为只读建议，不构成选课决定（f52，经傅景确认）</span>
+    </div>
+    <div class="note blue">💡 本页是 REQ-1（P0）的核心落点：把冲突提示从「选中后」提前到「选中前」。提示数据截至 <b>14:15 同步</b>（15 分钟周期 f34），超期自动显示「待刷新」，不承诺实时（f34）。</div>
+    <div class="card" style="margin-bottom:12px;">
+      <h4>可选课程（我的专业 · 2026 级软件技术）</h4>
+      <table class="tb">
+        <tr><th>课程</th><th>教师</th><th>时间</th><th>余量</th><th>选中前冲突提示（只读）</th><th>操作</th></tr>
+        <tr>
+          <td><b>移动应用开发</b></td><td>周晨</td><td>周二 5-6 节</td><td>12/45</td>
+          <td><span class="badge b-green">✓ 无冲突</span> 先修《Java 基础》已通过</td>
+          <td><button class="btn sm">选课</button></td>
+        </tr>
+        <tr style="background:var(--danger-soft)">
+          <td><b>Python 数据分析</b></td><td>吴岚</td><td>周三 5-6 节</td><td>8/45</td>
+          <td><span class="badge b-red">⚠ 先修冲突</span> 未修读《数据库基础》（先修关系 V2.7）<br><span style="color:var(--muted);font-size:12px">建议：先修或申请特殊确认（特殊申请由教务确认 · f40）</span></td>
+          <td><button class="btn ghost sm">仍要选</button></td>
+        </tr>
+        <tr style="background:var(--warn-soft)">
+          <td><b>软件测试</b></td><td>郑楠</td><td>周三 5-6 节</td><td>3/45</td>
+          <td><span class="badge b-warn">⚠ 时间冲突</span> 与《Python 数据分析》同时段<br><span style="color:var(--muted);font-size:12px">数据截至 14:15，标注「待刷新」时不作实时承诺</span></td>
+          <td><button class="btn ghost sm">仍要选</button></td>
+        </tr>
+        <tr>
+          <td><b>嵌入式系统</b></td><td>高远</td><td>周四 3-4 节</td><td>20/40</td>
+          <td><span class="badge b-warn">场地待核实</span> 实训楼 A302 维护占用（f11）→ 已转排课专员</td>
+          <td><button class="btn ghost sm">暂缓</button></td>
+        </tr>
+      </table>
+    </div>
+    <div class="cols">
+      <div class="col card" style="margin-bottom:0;">
+        <h4>先修链可视化（知识图谱子图）</h4>
+        <svg viewBox="0 0 640 110" style="width:100%;height:110px;">
+          <g font-size="11" font-family="Microsoft YaHei">
+            <line x1="90" y1="55" x2="240" y2="30" stroke="#cbd5e1" stroke-width="1.5"/><line x1="90" y1="55" x2="240" y2="80" stroke="#cbd5e1" stroke-width="1.5"/>
+            <line x1="290" y1="30" x2="430" y2="55" stroke="#cbd5e1" stroke-width="1.5"/><line x1="290" y1="80" x2="430" y2="55" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 3"/>
+            <line x1="480" y1="55" x2="580" y2="55" stroke="#cbd5e1" stroke-width="1.5"/>
+            <circle cx="60" cy="55" r="24" fill="#16a34a"/><text x="60" y="59" text-anchor="middle" fill="#fff">Java基础✓</text>
+            <circle cx="265" cy="30" r="24" fill="#7c3aed"/><text x="265" y="34" text-anchor="middle" fill="#fff">数据库基础</text>
+            <circle cx="265" cy="80" r="24" fill="#dc2626"/><text x="265" y="84" text-anchor="middle" fill="#fff">Web前端</text>
+            <circle cx="455" cy="55" r="26" fill="#2563eb" stroke="#dc2626" stroke-width="3"/><text x="455" y="59" text-anchor="middle" fill="#fff">Python数分</text>
+            <circle cx="605" cy="55" r="22" fill="#94a3b8"/><text x="605" y="59" text-anchor="middle" fill="#fff">毕业设计</text>
+          </g>
+        </svg>
+      </div>
+      <div class="col card" style="margin-bottom:0;">
+        <h4>我的选课草稿</h4>
+        <div style="font-size:12.5px;line-height:1.9;color:#334155;">
+          草稿可暂存、显示最后同步时间（f13：高峰期不离开业务现场也可暂存）。<br>
+          已暂存 2 门 · 最后同步 <b>14:15</b><br>
+          <span class="badge b-gray">只读提示不会替你选课（f32）</span> <span class="badge b-gray">选课结果落库走原教务系统</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P4 -->
+  <section class="page" id="p4">
+    <div class="page-head">
+      <h2>冲突处理工作流 <span class="badge b-red">M3 调停课协作</span></h2>
+      <span class="meta">对应 REQ-2 / REQ-4 · 交接五要素：业务编号+版本+状态+未解决事项+接手人（f23）</span>
+    </div>
+    <div class="cols">
+      <div class="col" style="flex:0 0 42%">
+        <div class="card">
+          <h4>冲突/调整单队列（本学期 280 → 目标 80）</h4>
+          <table class="tb">
+            <tr><th>编号</th><th>类型</th><th>状态</th><th>处理人</th></tr>
+            <tr style="background:var(--warn-soft)"><td><b>TZ-2026-0417</b></td><td>场地占用（f11）</td><td><span class="badge b-red">强制转人工</span></td><td>唐映秋</td></tr>
+            <tr><td>TZ-2026-0416</td><td>时间冲突</td><td><span class="badge b-blue">AI 建议待采纳</span></td><td>系统建议</td></tr>
+            <tr><td>TZ-2026-0415</td><td>容量冲突 48/45</td><td><span class="badge b-warn">待接手确认</span></td><td>秦芮→唐映秋</td></tr>
+            <tr><td>TZ-2026-0414</td><td>先修冲突</td><td><span class="badge b-green">已闭环</span></td><td>叶书验收</td></tr>
+            <tr><td>TZ-2026-0413</td><td>版本冲突（f24）</td><td><span class="badge b-red">强制转人工</span></td><td>傅景</td></tr>
+          </table>
+        </div>
+        <div class="note" style="margin-bottom:0;">四类兜底情形（f44）：场地占用 / 资料缺依据 / 版本冲突 / 系统不可用 → 一律转人工，标注触发原因 + 接手人 + 确认时间，<b>不得只给一句模糊提醒</b>。</div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <h4>TZ-2026-0417 · 详情</h4>
+          <div class="steps">
+            <div class="s done"><div class="dot">✓</div>冲突检出</div><div class="link"></div>
+            <div class="s done"><div class="dot">✓</div>转人工</div><div class="link"></div>
+            <div class="s cur"><div class="dot">4</div>排课专员核对</div><div class="link"></div>
+            <div class="s"><div class="dot">5</div>质量签核</div><div class="link"></div>
+            <div class="s"><div class="dot">6</div>名单确认</div>
+          </div>
+          <table class="tb">
+            <tr><td style="width:110px;color:var(--muted)">触发原因</td><td>实训室设备维护占用场地，排课表仍视为可用教室（f11）</td></tr>
+            <tr><td style="color:var(--muted)">AI 建议原文</td><td>建议改排至教学楼 305（原记录与待确认字段已显示 · f15）<span class="badge b-gray" style="margin-left:6px">建议 ≠ 决定</span></td></tr>
+            <tr><td style="color:var(--muted)">资料版本</td><td>培养方案 V3.1 · 教室容量 V1.9 · 快照 14:00（f35）</td></tr>
+            <tr><td style="color:var(--muted)">交接五要素</td><td>业务编号 TZ-2026-0417 · 版本 V1.9 · 状态 待核对 · 未解决事项 维护结束时间 · 接手人 唐映秋</td></tr>
+            <tr><td style="color:var(--muted)">接手确认</td><td><button class="btn sm">确认接手</button> <span style="font-size:12px;color:var(--muted)">仅发送消息不算完成（f23）· 超时限自动升级教务主任（f25）</span></td></tr>
+          </table>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>交接等待度量（REQ-4）</h4>
+          <div style="display:flex;gap:10px;">
+            <div class="kpi" style="padding:9px 12px;"><div class="v" style="font-size:16px">3.2h</div><div class="l">本单交接等待</div></div>
+            <div class="kpi" style="padding:9px 12px;"><div class="v" style="font-size:16px">1 次</div><div class="l">重新联系次数</div></div>
+            <div class="kpi" style="padding:9px 12px;"><div class="v" style="font-size:16px">0</div><div class="l">空转（无责任人）单</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P5 -->
+  <section class="page" id="p5">
+    <div class="page-head">
+      <h2>AI 教务助手 <span class="badge b-purple">M4 RAG 问答</span></h2>
+      <span class="meta">检索路径：实体链接 → 子图扩展 + 向量召回 → 重排 → LLM 生成 · 回答强制携带 [f##] 引用（审计要求 f45）</span>
+    </div>
+    <div class="cols">
+      <div class="col" style="flex:1.5">
+        <div class="card chat">
+          <div class="msg user">实训室被设备维护占用了，学生按课表去上课进不去，系统怎么处理？</div>
+          <div class="msg ai">
+            <div class="hdr"><span class="badge b-purple">RAG</span><span>数据截至快照 14:00 · 暂未更新</span><span class="badge b-gray">建议，非决定</span></div>
+            这属于<b>四类强制转人工情形</b>中的「场地占用」：实训室设备维护占用场地但排课表仍视为可用教室 <span class="cite">[f11]</span>。处理路径：<br>
+            1️⃣ 系统已暂停该时段 AI 建议，由排课专员唐映秋核对后继续，<b>错误结果不会覆盖原记录</b> <span class="cite">[f15]</span>；<br>
+            2️⃣ 转人工记录已标注触发原因、接手人与确认时间 <span class="cite">[f44]</span>，工单号 TZ-2026-0417；<br>
+            3️⃣ 你可暂存现场草稿、显示最后同步时间，无需离开业务现场补录 <span class="cite">[f13]</span>。
+            <div style="margin-top:8px;display:flex;gap:6px;"><button class="btn sm ghost">转人工</button><button class="btn sm ghost">查看工单</button></div>
+          </div>
+          <div class="msg user">为什么提示说"待刷新"？你们不是实时吗？</div>
+          <div class="msg ai">
+            <div class="hdr"><span class="badge b-purple">RAG</span><span class="badge b-gray">建议，非决定</span></div>
+            本系统接口为<b>只读</b>，可读课程与冲突、不能替学生选课或改成绩 <span class="cite">[f32]</span>；业务状态每 <b>15 分钟</b>同步一次，超过一个更新周期自动标为「待刷新」，<b>不作实时承诺</b> <span class="cite">[f34]</span>。接口中断时使用带时间戳的上一份快照，显示「暂未更新」，重连后按业务编号去重补齐 <span class="cite">[f35]</span>。
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <h4>边界护栏（硬编码，不可关闭）</h4>
+          <table class="tb">
+            <tr><td>接口权限</td><td><span class="badge b-blue">只读</span> f32</td></tr>
+            <tr><td>培养计划</td><td><span class="badge b-blue">不自动变更</span> f52</td></tr>
+            <tr><td>四类异常</td><td><span class="badge b-red">强制转人工</span> f44</td></tr>
+            <tr><td>错误建议</td><td><span class="badge b-red">不覆盖原记录</span> f15</td></tr>
+            <tr><td>权限</td><td><span class="badge b-warn">禁借用账号</span> f41</td></tr>
+            <tr><td>回答留痕</td><td><span class="badge b-green">引用+版本落库</span> f45</td></tr>
+          </table>
+        </div>
+        <div class="note blue" style="margin-bottom:0;">知识来源：项目知识图谱（60 实体 / 97 三元组）。低置信或歧义记录<b>不进入自动推荐样本</b>（f33），直接转人工修复队列。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P6 -->
+  <section class="page" id="p6">
+    <div class="page-head">
+      <h2>知识图谱 · 数据治理 <span class="badge b-blue">M5 口径治理</span></h2>
+      <span class="meta">对应 REQ-3 · 歧义记录进人工修复队列，不进入自动推荐样本（f33）</span>
+    </div>
+    <div class="cols">
+      <div class="col card">
+        <h4>项目知识图谱预览（60 实体 / 97 三元组）</h4>
+        <svg viewBox="0 0 560 300" style="width:100%;height:300px;">
+          <g stroke="#cbd5e1" stroke-width="1.3">
+            <line x1="280" y1="150" x2="150" y2="70"/><line x1="280" y1="150" x2="420" y2="70"/>
+            <line x1="280" y1="150" x2="110" y2="180"/><line x1="280" y1="150" x2="450" y2="185"/>
+            <line x1="280" y1="150" x2="220" y2="255"/><line x1="280" y1="150" x2="360" y2="255"/>
+            <line x1="150" y1="70" x2="70" y2="30"/><line x1="420" y1="70" x2="500" y2="35"/>
+            <line x1="110" y1="180" x2="45" y2="150"/><line x1="450" y1="185" x2="520" y2="230"/>
+            <line x1="220" y1="255" x2="150" y2="285"/><line x1="360" y1="255" x2="430" y2="290"/>
+          </g>
+          <g font-size="10.5" font-family="Microsoft YaHei" text-anchor="middle">
+            <circle cx="280" cy="150" r="30" fill="#2563eb"/><text x="280" y="154" fill="#fff" font-weight="700">冲突校验</text>
+            <circle cx="150" cy="70" r="24" fill="#7c3aed"/><text x="150" y="74" fill="#fff">培养方案</text>
+            <circle cx="420" cy="70" r="24" fill="#7c3aed"/><text x="420" y="74" fill="#fff">先修关系</text>
+            <circle cx="110" cy="180" r="24" fill="#7c3aed"/><text x="110" y="184" fill="#fff">教室容量</text>
+            <circle cx="450" cy="185" r="24" fill="#7c3aed"/><text x="450" y="189" fill="#fff">教师排班</text>
+            <circle cx="220" cy="255" r="24" fill="#dc2626"/><text x="220" y="259" fill="#fff">口径不一</text>
+            <circle cx="360" cy="255" r="24" fill="#d97706"/><text x="360" y="259" fill="#fff">四类转人工</text>
+            <circle cx="70" cy="30" r="18" fill="#64748b"/><text x="70" y="34" fill="#fff">V3.1</text>
+            <circle cx="500" cy="35" r="18" fill="#64748b"/><text x="500" y="34" fill="#fff">f21</text>
+            <circle cx="45" cy="150" r="18" fill="#64748b"/><text x="45" y="154" fill="#fff">f31</text>
+            <circle cx="520" cy="230" r="18" fill="#16a34a"/><text x="520" y="234" fill="#fff">REQ-3</text>
+            <circle cx="150" cy="285" r="18" fill="#64748b"/><text x="150" y="289" fill="#fff">f30</text>
+            <circle cx="430" cy="290" r="18" fill="#64748b"/><text x="430" y="294" fill="#fff">f44</text>
+          </g>
+        </svg>
+        <div style="font-size:12px;color:var(--muted);line-height:1.8;">完整交互版见 <b>knowledge-graph.html</b>：力导向布局 / 类型筛选 / 节点详情 / RAG 检索模拟。图谱同时作为 AI 助手（P5）的唯一知识源，实现"口径对齐一处维护、处处生效"。</div>
+      </div>
+      <div class="col">
+        <div class="card" style="margin-bottom:12px;">
+          <h4>字段级质量核查（三源：教务系统 / 场地预约 / 学籍库 · f30）</h4>
+          <table class="tb">
+            <tr><th>校验项</th><th>通过</th><th>歧义</th><th>处理</th></tr>
+            <tr><td>主编号一致（主数据）</td><td>412/420</td><td class="badge b-red" style="border-radius:6px">8</td><td>→ 修复队列</td></tr>
+            <tr><td>事件时间对齐</td><td>417/420</td><td class="badge b-warn" style="border-radius:6px">3</td><td>→ 修复队列</td></tr>
+            <tr><td>版本字段完整</td><td>420/420</td><td class="badge b-green" style="border-radius:6px">0</td><td>✓</td></tr>
+            <tr><td>新旧课程代码映射（f31）</td><td>398/420</td><td class="badge b-red" style="border-radius:6px">22</td><td>→ 映射表复核</td></tr>
+          </table>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h4>人工修复队列（歧义样本不进自动推荐 · f33）</h4>
+          <table class="tb">
+            <tr><th>记录</th><th>问题</th><th>认领</th></tr>
+            <tr><td>KC-0331 旧码 JS2001</td><td>新旧码并存，容量规则歧义</td><td><button class="btn sm ghost">认领</button></td></tr>
+            <tr><td>JS-0117</td><td>跨学院权限规则冲突</td><td><button class="btn sm ghost">认领</button></td></tr>
+            <tr><td>JS-0092</td><td>同步时点不一致（15min 窗口）</td><td><button class="btn sm ghost">认领</button></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P7 -->
+  <section class="page" id="p7">
+    <div class="page-head">
+      <h2>审计追溯中心 <span class="badge b-warn">M6 审计留痕</span></h2>
+      <span class="meta">对应 REQ-5 · 审计凭证 = 可重建处理链路（f45）：业务编号、资料版本、事实引用、建议结果、人工改动、签核人</span>
+    </div>
+    <div class="cols">
+      <div class="col" style="flex:1.4">
+        <div class="card">
+          <h4>TZ-2026-0417 · 处理链路重建</h4>
+          <div class="tl">
+            <div class="t"><b>14:02</b> 冲突检出 · 冲突预检引擎 · 依据 先修关系 V2.7 / 教室容量 V1.9 <span class="badge b-gray">事实引用 [f11]</span></div>
+            <div class="t ai"><b>14:02</b> AI 建议生成：改排教学楼 305 <span class="badge b-teal">建议，非决定</span> <span class="badge b-gray">已落库</span></div>
+            <div class="t human"><b>14:05</b> 触发强制转人工（场地占用）· 触发原因/接手人/确认时间 已标注 <span class="cite" style="color:var(--muted);font-size:11px">[f44]</span></div>
+            <div class="t human"><b>14:31</b> 唐映秋 接手确认（交接五要素齐备）· 人工改动：核对维护结束时间为 10-30 18:00</div>
+            <div class="t human"><b>15:10</b> 傅景 专业签核 · 采纳改排建议 · 签核意见：维持原记录 + 追加新排</div>
+          </div>
+        </div>
+        <div class="note" style="margin-bottom:0;">不记录账号口令与不必要的个人信息（f45）· 评价记录保留 90 天，期满由傅景复核删除或归档（f43）· 归档后调阅权限单独审批。</div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <h4>落库核查（傅景关心：自动落库还是人工补录？）</h4>
+          <table class="tb">
+            <tr><th>字段</th><th>写入方式</th><th>状态</th></tr>
+            <tr><td>业务编号 / 版本</td><td>自动</td><td><span class="badge b-green">✓</span></td></tr>
+            <tr><td>事实引用</td><td>自动（图谱锚点）</td><td><span class="badge b-green">✓</span></td></tr>
+            <tr><td>建议结果</td><td>自动</td><td><span class="badge b-green">✓</span></td></tr>
+            <tr><td>人工改动</td><td>自动（编辑差异）</td><td><span class="badge b-green">✓</span></td></tr>
+            <tr><td>签核人</td><td>自动（签核动作）</td><td><span class="badge b-green">✓</span></td></tr>
+          </table>
+          <div style="font-size:12px;color:var(--muted);margin-top:8px;">设计目标：全部字段<b>自动落库</b>，杜绝人工补录导致的追溯完整性风险（f45 中傅景明确列为风险项）。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P8 -->
+  <section class="page" id="p8">
+    <div class="page-head">
+      <h2>指标看板 <span class="badge b-green">M7 度量与验收</span></h2>
+      <span class="meta">对应 REQ-6 · 先定义口径，再看数字（f53）：固定分母 / 排除规则 / 统计周期，禁止拆单抬成功率</span>
+    </div>
+    <div class="cols" style="margin-bottom:12px;">
+      <div class="col card" style="margin-bottom:0;">
+        <h4>选课冲突数（周）</h4>
+        <div style="display:flex;align-items:flex-end;gap:14px;height:130px;padding:0 6px;">
+          <div style="flex:1;text-align:center;"><div style="height:104px;background:#93b4f5;border-radius:6px 6px 0 0;"></div><div style="font-size:11px;color:var(--muted);margin-top:4px;">W1<br>92</div></div>
+          <div style="flex:1;text-align:center;"><div style="height:82px;background:#93b4f5;border-radius:6px 6px 0 0;"></div><div style="font-size:11px;color:var(--muted);margin-top:4px;">W2<br>71</div></div>
+          <div style="flex:1;text-align:center;"><div style="height:58px;background:#2563eb;border-radius:6px 6px 0 0;"></div><div style="font-size:11px;color:var(--muted);margin-top:4px;">W3<br>53</div></div>
+          <div style="flex:1;text-align:center;"><div style="height:46px;background:#2563eb;border-radius:6px 6px 0 0;"></div><div style="font-size:11px;color:var(--muted);margin-top:4px;">W4<br>41</div></div>
+          <div style="flex:1;text-align:center;"><div style="height:22px;background:#16a34a;border-radius:6px 6px 0 0;"></div><div style="font-size:11px;color:var(--muted);margin-top:4px;">目标<br><b>≤18/周</b></div></div>
+        </div>
+      </div>
+      <div class="col card" style="margin-bottom:0;">
+        <h4>调课处理时长分布（REQ-4 采集）</h4>
+        <table class="tb">
+          <tr><th>节点</th><th>基线</th><th>当前</th></tr>
+          <tr><td>冲突检出→转人工</td><td>无基线（f01）</td><td>0.3h</td></tr>
+          <tr><td>交接等待</td><td>无基线（f44）</td><td>3.2h</td></tr>
+          <tr><td>核对处理</td><td>无基线</td><td>4.1h</td></tr>
+          <tr><td>签核→名单确认</td><td>无基线</td><td>5.0h</td></tr>
+          <tr><td><b>合计</b></td><td><b>3 天（f00）</b></td><td><b>1.6 天 ↓47%</b></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="cols">
+      <div class="col card" style="margin-bottom:0;">
+        <h4>口径定义卡（验收前必须确认 · 顾明岚×叶书）</h4>
+        <table class="tb">
+          <tr><td style="width:130px;color:var(--muted)">计数单元</td><td>一次冲突处理 = 一个业务编号从检出到名单确认的完整闭环</td></tr>
+          <tr><td style="color:var(--muted)">固定分母</td><td>试点专业 2026 级软件技术全部选课学生（f02：一个专业试点）</td></tr>
+          <tr><td style="color:var(--muted)">排除规则</td><td>学生主动退选不计入冲突；快照期间争议单单独标记</td></tr>
+          <tr><td style="color:var(--muted)">统计周期</td><td>周采集 / 月验收 / 学期终评；同一业务重复提交只计一次（f53）</td></tr>
+          <tr><td style="color:var(--muted)">净收益口径</td><td>节省工时 × 单价 − 维护成本 − 人工复核成本（f03：不能把全部节省当现金回款）</td></tr>
+        </table>
+      </div>
+      <div class="col card" style="margin-bottom:0;">
+        <h4>试点健康度</h4>
+        <table class="tb">
+          <tr><td>预算执行</td><td><b>6.2 / 10 万元</b>（f03）</td><td><div class="bar" style="width:120px"><i style="width:62%;background:var(--primary)"></i></div></td></tr>
+          <tr><td>识别率</td><td><b>100%</b>（f42）</td><td><span class="badge b-green">达标</span></td></tr>
+          <tr><td>工时下降</td><td><b>-18.4%</b>（目标 -30%）</td><td><span class="badge b-warn">进行中</span></td></tr>
+          <tr><td>停止条件触发</td><td><b>0 次</b>（f42：触及即暂停复盘）</td><td><span class="badge b-green">正常</span></td></tr>
+          <tr><td>周误判收集</td><td><b>3 条</b>（f55：辅导员/排课/负责人反馈）</td><td><span class="badge b-blue">已派负责人</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>甲鱼 🐢 · 排课选课与教务协作系统设计方案 · 页面原型交付物 · 2026-10-29</footer>
+</div>
+<script>
+const tabs = document.querySelectorAll('#tabs button');
+tabs.forEach(b => b.onclick = () => {
+  tabs.forEach(x => x.classList.remove('on')); b.classList.add('on');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById(b.dataset.p).classList.add('on');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>

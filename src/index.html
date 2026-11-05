@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>排课选课与教务协作系统 · Demo</title>
+<style>
+  :root {
+    --bg:#eef1f6; --panel:#fff; --border:#e2e8f0; --text:#1e293b; --muted:#64748b;
+    --primary:#2563eb; --primary-soft:#eff6ff; --ok:#16a34a; --ok-soft:#f0fdf4;
+    --warn:#d97706; --warn-soft:#fffbeb; --danger:#dc2626; --danger-soft:#fef2f2;
+    --teal:#0d9488; --purple:#7c3aed;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Microsoft YaHei","PingFang SC",sans-serif; background:var(--bg); color:var(--text); font-size:14px; }
+  .app { display:flex; min-height:100vh; }
+  aside { width:200px; background:#0f172a; color:#cbd5e1; padding:16px 10px; position:fixed; top:0; bottom:0; }
+  aside .logo { font-size:15px; font-weight:700; color:#fff; padding:4px 10px 14px; border-bottom:1px solid #1e293b; margin-bottom:10px; }
+  aside .logo small { display:block; font-size:10.5px; color:#64748b; font-weight:400; margin-top:3px; }
+  aside nav button { display:block; width:100%; text-align:left; background:none; border:none; color:#94a3b8; padding:9px 12px; border-radius:8px; font-size:13px; cursor:pointer; margin-bottom:2px; }
+  aside nav button:hover { background:#1e293b; color:#e2e8f0; }
+  aside nav button.on { background:var(--primary); color:#fff; font-weight:600; }
+  aside .foot { position:absolute; bottom:14px; left:10px; right:10px; font-size:10.5px; color:#475569; line-height:1.7; }
+  main { flex:1; margin-left:200px; padding:14px 18px; }
+  .topbar { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 16px; display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+  .topbar .t { font-weight:700; font-size:15px; }
+  .topbar .sync { font-size:12px; color:var(--muted); }
+  .topbar .sp { flex:1; }
+  .badge { display:inline-block; font-size:11px; padding:2px 9px; border-radius:999px; font-weight:600; }
+  .b-blue { background:var(--primary-soft); color:var(--primary); } .b-green { background:var(--ok-soft); color:var(--ok); }
+  .b-warn { background:var(--warn-soft); color:var(--warn); } .b-red { background:var(--danger-soft); color:var(--danger); }
+  .b-gray { background:#f1f5f9; color:var(--muted); } .b-teal { background:#f0fdfa; color:var(--teal); } .b-purple { background:#f5f3ff; color:var(--purple); }
+  .btn { display:inline-block; background:var(--primary); color:#fff; border:none; border-radius:8px; padding:7px 14px; font-size:12.5px; cursor:pointer; font-weight:600; }
+  .btn:hover { filter:brightness(1.08); }
+  .btn.ghost { background:#fff; color:var(--primary); border:1px solid var(--primary); }
+  .btn.sm { padding:4px 10px; font-size:12px; }
+  .btn.warn { background:var(--warn); } .btn.ok { background:var(--ok); }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  .view { display:none; } .view.on { display:block; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:13px 15px; margin-bottom:12px; }
+  .card h4 { font-size:13.5px; color:var(--muted); font-weight:600; margin-bottom:9px; }
+  .cols { display:flex; gap:12px; } .col { flex:1; min-width:0; }
+  .kpi { flex:1; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+  .kpi .v { font-size:21px; font-weight:700; } .kpi .l { font-size:12px; color:var(--muted); margin-top:3px; }
+  .bar { height:8px; background:#eef2f7; border-radius:99px; overflow:hidden; margin-top:6px; }
+  .bar i { display:block; height:100%; border-radius:99px; background:var(--primary); }
+  table.tb { width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.tb th { background:#f8fafc; color:var(--muted); text-align:left; font-weight:600; padding:7px 10px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  table.tb td { padding:7px 10px; border-bottom:1px solid #f1f5f9; line-height:1.6; }
+  table.tb tr:hover td { background:#fafcff; }
+  tr.row-conflict { background:var(--danger-soft); } tr.row-warn { background:var(--warn-soft); }
+  .note { background:var(--warn-soft); border:1px solid #fde68a; color:#92400e; border-radius:9px; padding:8px 12px; font-size:12px; line-height:1.7; margin-bottom:12px; }
+  .note.blue { background:var(--primary-soft); border-color:#bfdbfe; color:#1e40af; }
+  .tt { display:grid; grid-template-columns:52px repeat(5,1fr); gap:4px; font-size:11.5px; }
+  .tt .h { background:#f8fafc; color:var(--muted); text-align:center; padding:5px 2px; border-radius:6px; font-weight:600; }
+  .tt .c { background:#fbfdff; border:1px dashed var(--border); border-radius:6px; min-height:42px; padding:4px 6px; line-height:1.5; }
+  .tt .c.filled { background:var(--primary-soft); border:1px solid #bfdbfe; color:#1e40af; font-weight:600; }
+  .tt .c.conflict { background:var(--danger-soft); border:1px solid #fecaca; color:#991b1b; }
+  .tt .c.maint { background:repeating-linear-gradient(45deg,#fffbeb,#fffbeb 6px,#fef3c7 6px,#fef3c7 12px); border:1px solid #fde68a; color:#92400e; }
+  .steps { display:flex; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
+  .steps .s { text-align:center; font-size:11px; color:var(--muted); }
+  .steps .dot { width:24px; height:24px; border-radius:50%; background:#e2e8f0; color:#64748b; display:flex; align-items:center; justify-content:center; margin:0 auto 4px; font-size:11px; font-weight:700; }
+  .steps .s.done .dot { background:var(--ok); color:#fff; } .steps .s.cur .dot { background:var(--primary); color:#fff; box-shadow:0 0 0 4px var(--primary-soft); }
+  .steps .link { width:30px; height:2px; background:#e2e8f0; margin:12px 5px 0; }
+  .chat { display:flex; flex-direction:column; gap:10px; }
+  .msg { max-width:85%; border-radius:12px; padding:10px 14px; font-size:13px; line-height:1.85; }
+  .msg.user { align-self:flex-end; background:var(--primary); color:#fff; border-bottom-right-radius:4px; }
+  .msg.ai { align-self:flex-start; background:#f8fafc; border:1px solid var(--border); border-bottom-left-radius:4px; }
+  .msg.ai .cite { color:var(--primary); font-size:11px; }
+  .msg.ai .hdr { font-size:11px; color:var(--muted); margin-bottom:5px; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .examples { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+  .examples button { background:#f1f5f9; border:1px solid var(--border); color:#475569; font-size:12px; border-radius:999px; padding:4px 11px; cursor:pointer; }
+  .examples button:hover { background:var(--primary-soft); color:var(--primary); }
+  .rag-row { display:flex; gap:8px; margin-bottom:10px; }
+  .rag-row input { flex:1; border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:13px; outline:none; }
+  .rag-row input:focus { border-color:var(--primary); }
+  .tl { position:relative; padding-left:22px; }
+  .tl::before { content:''; position:absolute; left:7px; top:4px; bottom:4px; width:2px; background:#e2e8f0; }
+  .tl .t { position:relative; margin-bottom:11px; font-size:12.5px; line-height:1.7; }
+  .tl .t::before { content:''; position:absolute; left:-21px; top:4px; width:11px; height:11px; border-radius:50%; background:#fff; border:3px solid var(--primary); }
+  .tl .t.human::before { border-color:var(--warn); } .tl .t.ai::before { border-color:var(--teal); }
+  .chip { font-size:11.5px; padding:3px 10px; border-radius:999px; border:1.5px solid var(--border); background:#fff; color:var(--muted); cursor:pointer; user-select:none; display:inline-block; margin:0 5px 5px 0; }
+  .chip.on { color:#fff; }
+  .retrieval { background:#f8fafc; border:1px dashed var(--border); border-radius:8px; padding:7px 10px; font-size:11.5px; color:var(--muted); margin-bottom:8px; line-height:1.8; }
+  svg text { font-family:"Microsoft YaHei",sans-serif; }
+  .toast-wrap { position:fixed; top:16px; right:16px; z-index:99; display:flex; flex-direction:column; gap:8px; }
+  .toast { background:#0f172a; color:#fff; border-radius:9px; padding:10px 16px; font-size:12.5px; box-shadow:0 6px 18px rgba(15,23,42,.25); animation:tin .25s; max-width:380px; line-height:1.7; }
+  @keyframes tin { from { transform:translateY(-8px); opacity:0; } }
+  .banner { background:var(--danger-soft); border:1px solid #fecaca; color:#991b1b; border-radius:9px; padding:8px 12px; font-size:12.5px; margin-bottom:12px; display:none; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="logo">🐢 智教协作<small>排课选课与教务协作 · Demo V1.0</small></div>
+    <nav id="nav">
+      <button data-v="v1" class="on">📊 教务工作台</button>
+      <button data-v="v2">🗓️ 排课操作台</button>
+      <button data-v="v3">🎓 选课中心</button>
+      <button data-v="v4">🔄 冲突工作流</button>
+      <button data-v="v5">🤖 AI 教务助手</button>
+      <button data-v="v6">🕸️ 知识图谱</button>
+      <button data-v="v7">📜 审计追溯</button>
+      <button data-v="v8">📈 指标看板</button>
+    </nav>
+    <div class="foot">角色预设：顾明岚（教务主任）<br>数据为合成场景 · 只读边界 f32</div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <span class="t" id="vtitle">教务工作台</span>
+      <span class="sync" id="synclabel">数据同步：14:15（15 分钟周期 · f34）</span>
+      <span class="sp"></span>
+      <button class="btn ghost sm" id="btnOutage">⚡ 模拟接口中断</button>
+      <button class="btn ghost sm" id="btnReset">↺ 重置演示</button>
+    </div>
+    <div class="banner" id="outageBanner">⚠ 接口中断：正在使用 <b>带时间戳的只读快照（14:00）</b>，界面显示「暂未更新」；重连后将按业务编号去重补齐，人工流程不受影响（f35）。<button class="btn sm warn" id="btnReconnect" style="margin-left:8px;">模拟重连恢复</button></div>
+
+    <!-- V1 工作台 -->
+    <section class="view on" id="v1">
+      <div class="cols" style="margin-bottom:12px;">
+        <div class="kpi"><div class="v" id="kConflict" style="color:var(--primary)">280</div><div class="l">本学期冲突数（目标 360→80 · f00）</div><div class="bar"><i style="width:78%"></i></div><div class="l" style="color:var(--ok)" id="kConflictD">较基线 -22.2%（固定分母 f53）</div></div>
+        <div class="kpi"><div class="v" style="color:var(--teal)">1.6 天</div><div class="l">调课平均处理时长（3 天 → 1 天）</div><div class="bar"><i style="width:53%;background:var(--teal)"></i></div></div>
+        <div class="kpi"><div class="v" style="color:var(--warn)">-18.4%</div><div class="l">人工调整工时（目标 -30% · f02）</div><div class="bar"><i style="width:61%;background:var(--warn)"></i></div></div>
+        <div class="kpi"><div class="v">100%</div><div class="l">时空冲突识别率（试点专业 · f42）</div><div class="bar"><i style="width:100%;background:var(--ok)"></i></div></div>
+      </div>
+      <div class="cols">
+        <div class="col card">
+          <h4>我的待办</h4>
+          <table class="tb"><thead><tr><th>业务编号</th><th>事项</th><th>状态</th></tr></thead><tbody id="todoBody"></tbody></table>
+        </div>
+        <div class="col card">
+          <h4>系统状态（三源只读 · f30）</h4>
+          <table class="tb">
+            <tr><td>教务系统接口</td><td id="st1"><span class="badge b-green">正常</span></td><td>只读（f32）</td></tr>
+            <tr><td>场地预约接口</td><td id="st2"><span class="badge b-green">正常</span></td><td id="st2b">只读</td></tr>
+            <tr><td>学籍库接口</td><td id="st3"><span class="badge b-green">正常</span></td><td>只读</td></tr>
+          </table>
+          <div class="note blue" style="margin:10px 0 0;">💡 演示提示：点右上角「模拟接口中断」可看快照降级（f35）；去选课中心制造一笔冲突，再跟它走完整个工作流。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- V2 排课操作台 -->
+    <section class="view" id="v2">
+      <div class="cols">
+        <div class="col" style="flex:0 0 32%">
+          <div class="card">
+            <h4>约束数据源（冲突校验四输入 · f21）</h4>
+            <table class="tb">
+              <tr><td>培养方案</td><td>V3.1</td><td><span class="badge b-green">已校验</span></td></tr>
+              <tr><td>先修关系</td><td>V2.7</td><td><span class="badge b-green">已校验</span></td></tr>
+              <tr><td>教室容量</td><td>V1.9</td><td><span class="badge b-warn" id="capBadge">2 条歧义</span></td></tr>
+              <tr><td>教师排班</td><td>V2.2</td><td><span class="badge b-green">已校验</span></td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <h4>排课引擎</h4>
+            <div style="display:flex;gap:8px;margin-bottom:9px;"><button class="btn sm" id="btnRun">▶ 运行排课</button></div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.8;" id="engineInfo">规则约束求解 + 冲突预检；识别率由确定性规则保证，LLM 仅做解释（f52）。</div>
+          </div>
+          <div class="card" style="margin-bottom:0;">
+            <h4>规则版本管理（f24）</h4>
+            <div style="font-size:12px;line-height:1.8;color:#334155;">规则冲突时附两版本提交质量专员傅景复核，<b>不自动合并、不选宽松条款</b>。</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h4>周课表 · 2026 级软件技术（第 1 周）</h4>
+            <div class="tt">
+              <div class="h"></div><div class="h">周一</div><div class="h">周二</div><div class="h">周三</div><div class="h">周四</div><div class="h">周五</div>
+              <div class="h">1-2节</div><div class="c filled">Web 前端<br>实训楼 A302</div><div class="c"></div><div class="c filled">数据库<br>教学楼 201</div><div class="c"></div><div class="c"></div>
+              <div class="h">3-4节</div><div class="c"></div><div class="c filled">Java 进阶<br>实训楼 A302</div><div class="c"></div><div class="c filled">网络基础<br>教学楼 305</div><div class="c"></div>
+              <div class="h">5-6节</div><div class="c maint" id="ttMaint">实训室维护占用<br>⚠ 待刷新</div><div class="c"></div><div class="c conflict" id="ttConflict">容量冲突 48/45<br>TZ-2026-0417</div><div class="c"></div><div class="c filled">软件工程<br>教学楼 201</div>
+              <div class="h">7-8节</div><div class="c"></div><div class="c filled">体育<br>操场</div><div class="c"></div><div class="c"></div><div class="c"></div>
+            </div>
+          </div>
+          <div class="note" style="margin-bottom:0;">⚠ 黄纹 = 实训室维护占用未同步（f11）→ 已强制转人工（f44）；红 = 容量冲突待处理。系统<b>不提供</b>「绕过冲突直接发布」按钮（权限边界 f22）。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- V3 选课中心 -->
+    <section class="view" id="v3">
+      <div class="note blue">💡 REQ-1（P0）核心落点：把冲突提示从「选中后」提前到「选中前」。以下提示为<b>只读建议，不构成选课决定</b>（f52）；选一门冲突课试试，会实时生成工单并进入工作流。</div>
+      <div class="card">
+        <h4>可选课程 · 2026 级软件技术</h4>
+        <table class="tb"><thead><tr><th>课程</th><th>教师</th><th>时间</th><th>余量</th><th>选中前冲突提示（只读）</th><th>操作</th></tr></thead><tbody id="courseBody"></tbody></table>
+      </div>
+      <div class="cols">
+        <div class="col card" style="margin-bottom:0;">
+          <h4>先修链（知识图谱子图）</h4>
+          <svg viewBox="0 0 640 105" style="width:100%;height:105px;">
+            <g font-size="11" text-anchor="middle">
+              <line x1="90" y1="52" x2="240" y2="28" stroke="#cbd5e1" stroke-width="1.5"/><line x1="90" y1="52" x2="240" y2="76" stroke="#cbd5e1" stroke-width="1.5"/>
+              <line x1="290" y1="28" x2="430" y2="52" stroke="#cbd5e1" stroke-width="1.5"/><line x1="290" y1="76" x2="430" y2="52" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 3"/>
+              <line x1="485" y1="52" x2="580" y2="52" stroke="#cbd5e1" stroke-width="1.5"/>
+              <circle cx="60" cy="52" r="23" fill="#16a34a"/><text x="60" y="56" fill="#fff">Java基础✓</text>
+              <circle cx="265" cy="28" r="23" fill="#7c3aed"/><text x="265" y="32" fill="#fff">数据库基础</text>
+              <circle cx="265" cy="76" r="23" fill="#dc2626"/><text x="265" y="80" fill="#fff">Web前端</text>
+              <circle cx="458" cy="52" r="25" fill="#2563eb" stroke="#dc2626" stroke-width="3"/><text x="458" y="56" fill="#fff">Python数分</text>
+              <circle cx="605" cy="52" r="21" fill="#94a3b8"/><text x="605" y="56" fill="#fff">毕业设计</text>
+            </g>
+          </svg>
+        </div>
+        <div class="col card" style="margin-bottom:0;">
+          <h4>我的选课草稿</h4>
+          <div id="draftList" style="font-size:12.5px;line-height:2;color:#334155;">暂无草稿 · 草稿可暂存并显示最后同步时间（f13）</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- V4 冲突工作流 -->
+    <section class="view" id="v4">
+      <div class="cols">
+        <div class="col" style="flex:0 0 44%">
+          <div class="card">
+            <h4>工单队列（本学期 280 → 目标 80）</h4>
+            <table class="tb"><thead><tr><th>编号</th><th>类型</th><th>状态</th><th>处理人</th></tr></thead><tbody id="ticketBody"></tbody></table>
+          </div>
+          <div class="note" style="margin-bottom:0;">四类强制转人工（f44）：场地占用 / 资料缺依据 / 版本冲突 / 系统不可用。转人工必须标注<b>触发原因 + 接手人 + 确认时间</b>。</div>
+        </div>
+        <div class="col">
+          <div class="card" id="ticketDetail"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- V5 AI 助手 -->
+    <section class="view" id="v5">
+      <div class="cols">
+        <div class="col" style="flex:1.5">
+          <div class="card chat" id="chatBox" style="min-height:420px;"></div>
+          <div class="examples" id="aiExamples"></div>
+          <div class="rag-row">
+            <input type="text" id="aiq" placeholder="输入问题，例如：实训室被占用系统怎么处理？">
+            <button class="btn" id="aiAsk">发送</button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h4>边界护栏（硬编码 · 不可关闭）</h4>
+            <table class="tb">
+              <tr><td>接口权限</td><td><span class="badge b-blue">只读</span> f32</td></tr>
+              <tr><td>培养计划</td><td><span class="badge b-blue">不自动变更</span> f52</td></tr>
+              <tr><td>四类异常</td><td><span class="badge b-red">强制转人工</span> f44</td></tr>
+              <tr><td>错误建议</td><td><span class="badge b-red">不覆盖原记录</span> f15</td></tr>
+              <tr><td>回答留痕</td><td><span class="badge b-green">引用+版本落库</span> f45</td></tr>
+            </table>
+          </div>
+          <div class="note blue" style="margin-bottom:0;">知识源：项目知识图谱（60 实体 / 97 三元组）。每次回答都会写入审计（含引用锚点），可在「审计追溯」页查看。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- V6 知识图谱 -->
+    <section class="view" id="v6">
+      <div class="cols">
+        <div class="col card" style="flex:1.6;">
+          <h4>项目知识图谱（<span id="kgStats"></span>）· 点击节点看溯源</h4>
+          <div id="kgChips" style="margin-bottom:6px;"></div>
+          <svg id="kgSvg" viewBox="0 0 960 560" style="width:100%;height:540px;background:#fcfdff;border:1px solid var(--border);border-radius:10px;"></svg>
+        </div>
+        <div class="col card" style="align-self:flex-start;">
+          <h4>节点详情</h4>
+          <div id="kgDetail" style="font-size:12.5px;color:var(--muted);line-height:1.8;">点击图中任意节点，查看属性与事实来源（f00–f55）。可拖拽整理布局。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- V7 审计 -->
+    <section class="view" id="v7">
+      <div class="cols">
+        <div class="col" style="flex:1.4">
+          <div class="card">
+            <h4>处理链路重建（审计凭证 · f45）<span class="badge b-gray" style="margin-left:6px" id="auditScope">TZ-2026-0417</span></h4>
+            <div class="tl" id="auditTl"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card" style="margin-bottom:12px;">
+            <h4>落库方式核查</h4>
+            <table class="tb">
+              <tr><th>字段</th><th>方式</th></tr>
+              <tr><td>业务编号 / 版本</td><td>自动 <span class="badge b-green">✓</span></td></tr>
+              <tr><td>事实引用（f##）</td><td>自动 <span class="badge b-green">✓</span></td></tr>
+              <tr><td>建议结果</td><td>自动 <span class="badge b-green">✓</span></td></tr>
+              <tr><td>人工改动 / 签核人</td><td>自动 <span class="badge b-green">✓</span></td></tr>
+            </table>
+            <div style="font-size:11.5px;color:var(--muted);margin-top:7px;">全自动落库，杜绝人工补录的追溯完整性风险（f45）。不记录口令与多余个人信息。</div>
+          </div>
+          <div class="note" style="margin-bottom:0;">评价记录保留 90 天，期满由傅景复核删除或归档（f43）。AI 助手的每次回答也已自动写入上方时间线。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- V8 指标看板 -->
+    <section class="view" id="v8">
+      <div class="cols" style="margin-bottom:12px;">
+        <div class="col card" style="margin-bottom:0;">
+          <h4>选课冲突数（周）· 目标 ≤18/周</h4>
+          <div style="display:flex;align-items:flex-end;gap:14px;height:130px;padding:0 6px;" id="conflictChart"></div>
+        </div>
+        <div class="col card" style="margin-bottom:0;">
+          <h4>调课处理时长分解（逐笔采集 · f53）</h4>
+          <table class="tb">
+            <tr><th>节点</th><th>基线</th><th>当前</th></tr>
+            <tr><td>冲突检出→转人工</td><td>无基线（f01）</td><td>0.3h</td></tr>
+            <tr><td>交接等待</td><td>无基线</td><td id="mWait">3.2h</td></tr>
+            <tr><td>核对处理</td><td>无基线</td><td>4.1h</td></tr>
+            <tr><td>签核→名单确认</td><td>无基线</td><td>5.0h</td></tr>
+            <tr><td><b>合计</b></td><td><b>3 天（f00）</b></td><td><b>1.6 天 ↓47%</b></td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="cols">
+        <div class="col card" style="margin-bottom:0;">
+          <h4>口径定义卡（验收前置件 · 顾明岚×叶书签认）</h4>
+          <table class="tb">
+            <tr><td style="width:120px;color:var(--muted)">计数单元</td><td>一个业务编号从检出到名单确认的完整闭环</td></tr>
+            <tr><td style="color:var(--muted)">固定分母</td><td>试点专业全部选课学生（f02）</td></tr>
+            <tr><td style="color:var(--muted)">排除规则</td><td>主动退选不计入；快照期争议单单独标记</td></tr>
+            <tr><td style="color:var(--muted)">统计周期</td><td>周采集 / 月验收；重复提交只计一次（f53）</td></tr>
+          </table>
+        </div>
+        <div class="col card" style="margin-bottom:0;">
+          <h4>试点健康度</h4>
+          <table class="tb">
+            <tr><td>预算执行</td><td><b>6.2 / 10 万元</b>（f03）</td></tr>
+            <tr><td>识别率</td><td><b>100%</b> <span class="badge b-green">达标</span></td></tr>
+            <tr><td>停止条件触发</td><td><b>0 次</b>（f42）</td></tr>
+            <tr><td>周误判收集</td><td><b>3 条</b>（f55）</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast-wrap" id="toasts"></div>
+
+<script id="kb-data" type="application/json">{
+  "meta": {
+    "name": "排课选课与教务协作 · 项目知识库",
+    "version": "1.0",
+    "built_at": "2026-10-29",
+    "method": "LLM 三元组抽取（访谈记录/行业报告）→ wiki 补充 → 人工校核入库；支持 RAG 检索与子图推理",
+    "sources": [
+      "知行职业学院 FDE 需求发现报告（36 条访谈事实 f00-f55，合成场景）",
+      "排课选课与教务协作行业分析报告（2026-10）"
+    ],
+    "stats": {
+      "entities": 60,
+      "relations": 97,
+      "fact_anchors": 36
+    }
+  },
+  "schema": {
+    "entity_categories": [
+      "role",
+      "process",
+      "object",
+      "painpoint",
+      "constraint",
+      "requirement",
+      "metric",
+      "tech",
+      "industry"
+    ],
+    "category_labels": {
+      "role": "角色",
+      "process": "流程节点",
+      "object": "业务对象",
+      "painpoint": "痛点/异常",
+      "constraint": "规则约束",
+      "requirement": "候选需求",
+      "metric": "指标/预算",
+      "tech": "技术组件",
+      "industry": "行业事实"
+    }
+  },
+  "entities": [
+    {
+      "id": "E01",
+      "name": "顾明岚（教务主任）",
+      "category": "role",
+      "desc": "试点发起人。定试点范围与验收口径，不能越过跨部门流程调整与权限审批。",
+      "sources": [
+        "f00",
+        "f01",
+        "f02",
+        "f03",
+        "f04",
+        "f05"
+      ]
+    },
+    {
+      "id": "E02",
+      "name": "林亦舟（班级辅导员）",
+      "category": "role",
+      "desc": "一线消化冲突的人：逐单解释登记，高峰期只能用现有终端。",
+      "sources": [
+        "f10",
+        "f11",
+        "f12",
+        "f13",
+        "f14",
+        "f15"
+      ]
+    },
+    {
+      "id": "E03",
+      "name": "唐映秋（排课专员）",
+      "category": "role",
+      "desc": "流程与交接责任人：整理校核、发起复核、分派异常；不能代替专业签核。",
+      "sources": [
+        "f20",
+        "f21",
+        "f22",
+        "f23",
+        "f24",
+        "f25"
+      ]
+    },
+    {
+      "id": "E04",
+      "name": "秦芮（教务系统工程师）",
+      "category": "role",
+      "desc": "数据与接口治理人：三系统无统一视图、接口只读、15 分钟同步、快照兜底。",
+      "sources": [
+        "f30",
+        "f31",
+        "f32",
+        "f33",
+        "f34",
+        "f35"
+      ]
+    },
+    {
+      "id": "E05",
+      "name": "傅景（教学质量专员）",
+      "category": "role",
+      "desc": "质量守门人：四类兜底、审计留痕、可因关键风险否决上线。",
+      "sources": [
+        "f40",
+        "f41",
+        "f42",
+        "f43",
+        "f44",
+        "f45"
+      ]
+    },
+    {
+      "id": "E06",
+      "name": "叶书（专业课程负责人）",
+      "category": "role",
+      "desc": "服务解释与反馈闭环：受理争议、参与服务结果验收、确认统计口径。",
+      "sources": [
+        "f50",
+        "f51",
+        "f52",
+        "f53",
+        "f54",
+        "f55"
+      ]
+    },
+    {
+      "id": "E10",
+      "name": "教学计划",
+      "category": "process",
+      "desc": "主流程第 1 步：学期课程与培养安排的起点。",
+      "sources": [
+        "f01",
+        "f20"
+      ]
+    },
+    {
+      "id": "E11",
+      "name": "排课",
+      "category": "process",
+      "desc": "主流程第 2 步：按培养方案与资源约束编排课表。",
+      "sources": [
+        "f01",
+        "f20"
+      ]
+    },
+    {
+      "id": "E12",
+      "name": "选课",
+      "category": "process",
+      "desc": "主流程第 3 步：学生选课，冲突在本环节后置暴露。",
+      "sources": [
+        "f01",
+        "f10"
+      ]
+    },
+    {
+      "id": "E13",
+      "name": "冲突校验",
+      "category": "process",
+      "desc": "主流程第 4 步：AI 只读冲突检查与方案建议的落点。",
+      "sources": [
+        "f01",
+        "f52"
+      ]
+    },
+    {
+      "id": "E14",
+      "name": "调整",
+      "category": "process",
+      "desc": "主流程第 5 步：调课与异常处理，工时最高的环节。",
+      "sources": [
+        "f01",
+        "f12"
+      ]
+    },
+    {
+      "id": "E15",
+      "name": "名单确认",
+      "category": "process",
+      "desc": "主流程第 6 步：最终选课名单确认归档。",
+      "sources": [
+        "f01",
+        "f20"
+      ]
+    },
+    {
+      "id": "E20",
+      "name": "培养方案",
+      "category": "object",
+      "desc": "冲突校验四类输入之一；AI 不得自动改变。",
+      "sources": [
+        "f21",
+        "f33",
+        "f52"
+      ]
+    },
+    {
+      "id": "E21",
+      "name": "先修关系",
+      "category": "object",
+      "desc": "课程先修依赖图；选中后才发现冲突的主要来源之一。",
+      "sources": [
+        "f10",
+        "f21",
+        "f33"
+      ]
+    },
+    {
+      "id": "E22",
+      "name": "教室容量",
+      "category": "object",
+      "desc": "场地资源约束；跨学院容量规则不一致。",
+      "sources": [
+        "f21",
+        "f31",
+        "f50"
+      ]
+    },
+    {
+      "id": "E23",
+      "name": "教师排班",
+      "category": "object",
+      "desc": "师资约束；教师关心连堂。",
+      "sources": [
+        "f21",
+        "f33",
+        "f50"
+      ]
+    },
+    {
+      "id": "E24",
+      "name": "课程（新旧代码并存）",
+      "category": "object",
+      "desc": "同一门课新旧代码并存，是口径治理的核心对象。",
+      "sources": [
+        "f31",
+        "f33"
+      ]
+    },
+    {
+      "id": "E25",
+      "name": "选课记录",
+      "category": "object",
+      "desc": "学生选课结果数据；接口不可写。",
+      "sources": [
+        "f32",
+        "f10"
+      ]
+    },
+    {
+      "id": "E26",
+      "name": "课表",
+      "category": "object",
+      "desc": "排课结果；被异常数据污染即失去公信力。",
+      "sources": [
+        "f11",
+        "f15"
+      ]
+    },
+    {
+      "id": "E27",
+      "name": "教室/实训室",
+      "category": "object",
+      "desc": "场地资源；存在设备维护占用但排课表仍视为可用的异常。",
+      "sources": [
+        "f11",
+        "f44"
+      ]
+    },
+    {
+      "id": "E28",
+      "name": "调整请求",
+      "category": "object",
+      "desc": "开学周日均 120 个，一线压力的直接来源。",
+      "sources": [
+        "f12",
+        "f51"
+      ]
+    },
+    {
+      "id": "E29",
+      "name": "调课单/工单",
+      "category": "object",
+      "desc": "调整流程的载体，需业务编号+版本+状态。",
+      "sources": [
+        "f23",
+        "f25"
+      ]
+    },
+    {
+      "id": "E30",
+      "name": "交接单",
+      "category": "object",
+      "desc": "交接五要素：业务编号、版本、状态、未解决事项、接手人。",
+      "sources": [
+        "f23"
+      ]
+    },
+    {
+      "id": "E31",
+      "name": "审计记录",
+      "category": "object",
+      "desc": "业务编号、资料版本、事实引用、建议结果、人工改动、签核人全量留痕。",
+      "sources": [
+        "f45",
+        "f43"
+      ]
+    },
+    {
+      "id": "E40",
+      "name": "冲突后置暴露",
+      "category": "painpoint",
+      "desc": "学生选中后才发现先修课或教室冲突，返工落到辅导员。",
+      "sources": [
+        "f10",
+        "f12"
+      ]
+    },
+    {
+      "id": "E41",
+      "name": "交接信息断档",
+      "category": "painpoint",
+      "desc": "关键说明留在个人便签或群里，不随单据交接，异常被重复处理。",
+      "sources": [
+        "f14"
+      ]
+    },
+    {
+      "id": "E42",
+      "name": "多源口径不一",
+      "category": "painpoint",
+      "desc": "教务系统、场地预约、学籍库三系统无统一业务状态视图。",
+      "sources": [
+        "f30",
+        "f31"
+      ]
+    },
+    {
+      "id": "E43",
+      "name": "实训室维护占用（典型异常）",
+      "category": "painpoint",
+      "desc": "设备维护占用场地但排课表仍视为可用教室，学生到门口才发现进不去。",
+      "sources": [
+        "f11",
+        "f15",
+        "f44"
+      ]
+    },
+    {
+      "id": "E44",
+      "name": "节点耗时无基线",
+      "category": "painpoint",
+      "desc": "各节点等待与处理时间未量出，验收缺少可比起点。",
+      "sources": [
+        "f01",
+        "f53"
+      ]
+    },
+    {
+      "id": "E45",
+      "name": "拆单抬成功率风险",
+      "category": "painpoint",
+      "desc": "同一业务拆成多次成功抬高比例，统计口径必须固定分母。",
+      "sources": [
+        "f53"
+      ]
+    },
+    {
+      "id": "E50",
+      "name": "接口只读边界",
+      "category": "constraint",
+      "desc": "可读课程和冲突，不能自动替学生选课或修改成绩。",
+      "sources": [
+        "f32",
+        "f52"
+      ]
+    },
+    {
+      "id": "E51",
+      "name": "15 分钟同步",
+      "category": "constraint",
+      "desc": "每 15 分钟更新已授权业务状态；超一个周期标为待刷新，不作实时承诺。",
+      "sources": [
+        "f34"
+      ]
+    },
+    {
+      "id": "E52",
+      "name": "快照兜底",
+      "category": "constraint",
+      "desc": "接口中断时用带时间戳的只读快照，显示暂未更新，重连按业务编号去重补齐。",
+      "sources": [
+        "f35"
+      ]
+    },
+    {
+      "id": "E53",
+      "name": "四类强制转人工",
+      "category": "constraint",
+      "desc": "场地占用、资料缺依据、版本冲突、系统不可用 → 转人工并标注触发原因/接手人/确认时间。",
+      "sources": [
+        "f44",
+        "f15"
+      ]
+    },
+    {
+      "id": "E54",
+      "name": "规则版本管理",
+      "category": "constraint",
+      "desc": "规则按生效日期和适用范围选版本；冲突时附两版本给质量专员，不自行合并。",
+      "sources": [
+        "f24"
+      ]
+    },
+    {
+      "id": "E55",
+      "name": "权限红线",
+      "category": "constraint",
+      "desc": "授权岗位才能查看四类数据；不能借用他人账号；最终决定走审批人。",
+      "sources": [
+        "f41",
+        "f40"
+      ]
+    },
+    {
+      "id": "E56",
+      "name": "评价记录 90 天保留",
+      "category": "constraint",
+      "desc": "评价记录暂保留 90 天，期满由质量专员复核删除或归档。",
+      "sources": [
+        "f43"
+      ]
+    },
+    {
+      "id": "E60",
+      "name": "REQ-1 选中前只读冲突提示",
+      "category": "requirement",
+      "desc": "选课前提供先修课与教室冲突的只读提示，减少选中后返工。[P0]",
+      "sources": [
+        "f10",
+        "f32",
+        "f52",
+        "f34"
+      ]
+    },
+    {
+      "id": "E61",
+      "name": "REQ-2 异常强制转人工留痕",
+      "category": "requirement",
+      "desc": "四类异常强制转人工并留痕，错误建议不得覆盖原记录。[P0]",
+      "sources": [
+        "f11",
+        "f15",
+        "f44"
+      ]
+    },
+    {
+      "id": "E62",
+      "name": "REQ-3 多源数据口径治理",
+      "category": "requirement",
+      "desc": "校验主编号/事件时间/版本字段，歧义记录进人工修复队列。[P0]",
+      "sources": [
+        "f31",
+        "f33",
+        "f30"
+      ]
+    },
+    {
+      "id": "E63",
+      "name": "REQ-4 交接闭环",
+      "category": "requirement",
+      "desc": "业务编号+版本+状态+未解决事项+接手人确认，逐笔采集等待时长。[P1]",
+      "sources": [
+        "f20",
+        "f25",
+        "f23",
+        "f12"
+      ]
+    },
+    {
+      "id": "E64",
+      "name": "REQ-5 审计自动落库",
+      "category": "requirement",
+      "desc": "建议结果、人工改动、签核人自动落库，支持处理链路重建。[P1]",
+      "sources": [
+        "f45",
+        "f43"
+      ]
+    },
+    {
+      "id": "E65",
+      "name": "REQ-6 指标口径治理",
+      "category": "requirement",
+      "desc": "先定义一次冲突处理的计数单元与排除规则，再对照工时降30%。[P2]",
+      "sources": [
+        "f50",
+        "f53",
+        "f51"
+      ]
+    },
+    {
+      "id": "E70",
+      "name": "冲突 360→80",
+      "category": "metric",
+      "desc": "每学期选课冲突从 360 个压到 80 个（硬指标）。",
+      "sources": [
+        "f00"
+      ]
+    },
+    {
+      "id": "E71",
+      "name": "调课 3天→1天",
+      "category": "metric",
+      "desc": "调课处理时长从 3 天降到 1 天（硬指标）。",
+      "sources": [
+        "f00"
+      ]
+    },
+    {
+      "id": "E72",
+      "name": "时空冲突识别率 100%",
+      "category": "metric",
+      "desc": "试点专业内识别率 100%，以历史回放验证，人工复核抽样。",
+      "sources": [
+        "f02",
+        "f42"
+      ]
+    },
+    {
+      "id": "E73",
+      "name": "人工调整工时 -30%",
+      "category": "metric",
+      "desc": "人工调整工时下降 30%，需固定分母与统计周期。",
+      "sources": [
+        "f02",
+        "f42",
+        "f53"
+      ]
+    },
+    {
+      "id": "E74",
+      "name": "基线 420 门次/学期",
+      "category": "metric",
+      "desc": "每学期 420 门次课程，工作量基线。",
+      "sources": [
+        "f12",
+        "f51"
+      ]
+    },
+    {
+      "id": "E75",
+      "name": "开学周日均 120 请求",
+      "category": "metric",
+      "desc": "开学周日均 120 个调整请求，峰值压力指标。",
+      "sources": [
+        "f12",
+        "f51"
+      ]
+    },
+    {
+      "id": "E76",
+      "name": "首期预算 10 万元",
+      "category": "metric",
+      "desc": "含集成、培训与验证；收益须扣除维护及人工复核成本。",
+      "sources": [
+        "f03"
+      ]
+    },
+    {
+      "id": "E80",
+      "name": "LLM",
+      "category": "tech",
+      "desc": "大语言模型：三元组抽取、RAG 生成、建议解释；只输出建议不落库。",
+      "sources": [
+        "f52"
+      ]
+    },
+    {
+      "id": "E81",
+      "name": "RAG",
+      "category": "tech",
+      "desc": "检索增强生成：向量召回+子图检索→重排→生成带引用的回答。",
+      "sources": [
+        "f45"
+      ]
+    },
+    {
+      "id": "E82",
+      "name": "知识图谱",
+      "category": "tech",
+      "desc": "以实体-关系-事实锚点组织业务知识，支持口径对齐与链路推理。",
+      "sources": [
+        "f21",
+        "f33"
+      ]
+    },
+    {
+      "id": "E83",
+      "name": "向量检索",
+      "category": "tech",
+      "desc": "实体/三元组 Embedding 后相似度召回，与子图检索互补。",
+      "sources": [
+        "f33"
+      ]
+    },
+    {
+      "id": "E84",
+      "name": "冲突预检引擎",
+      "category": "tech",
+      "desc": "规则+约束校验先行，LLM 做解释与建议，识别率由确定性规则保证。",
+      "sources": [
+        "f02",
+        "f42"
+      ]
+    },
+    {
+      "id": "E90",
+      "name": "市场规模 67–99 亿元",
+      "category": "industry",
+      "desc": "2025 年中国排课类市场三口径交叉：67.2亿（狭义）/约99亿（智慧校园×22%）/180亿（含解决方案）。",
+      "sources": [
+        "行业分析报告 §2.2"
+      ]
+    },
+    {
+      "id": "E91",
+      "name": "CR3 约 39.4%",
+      "category": "industry",
+      "desc": "前三大厂商合计份额，长尾 230+ 家，场景碎片化。",
+      "sources": [
+        "行业分析报告 §4.3"
+      ]
+    },
+    {
+      "id": "E92",
+      "name": "职教渗透率 22.8%",
+      "category": "industry",
+      "desc": "职业教育排课系统渗透率，对比高校 61.3%，结构性空白。",
+      "sources": [
+        "行业分析报告 §2.2"
+      ]
+    },
+    {
+      "id": "E93",
+      "name": "SaaS 增速 41.2%",
+      "category": "industry",
+      "desc": "SaaS 订阅细分收入同比增速，为最快增长形态。",
+      "sources": [
+        "行业分析报告 §2.2"
+      ]
+    },
+    {
+      "id": "E94",
+      "name": "产品重心向协作层迁移",
+      "category": "industry",
+      "desc": "行业从排课算法向流程协作与数据治理迁移；六需求中五个属协作/治理层。",
+      "sources": [
+        "行业分析报告 §6.4"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "s": "E01",
+      "p": "设定硬指标",
+      "o": "E70",
+      "source": "f00"
+    },
+    {
+      "s": "E01",
+      "p": "设定硬指标",
+      "o": "E71",
+      "source": "f00"
+    },
+    {
+      "s": "E01",
+      "p": "制定验收口径",
+      "o": "E72",
+      "source": "f02"
+    },
+    {
+      "s": "E01",
+      "p": "制定验收口径",
+      "o": "E73",
+      "source": "f02"
+    },
+    {
+      "s": "E01",
+      "p": "提供预算",
+      "o": "E76",
+      "source": "f03"
+    },
+    {
+      "s": "E01",
+      "p": "推动立项",
+      "o": "E60",
+      "source": "f04"
+    },
+    {
+      "s": "E01",
+      "p": "确认节点耗时口径",
+      "o": "E44",
+      "source": "f01"
+    },
+    {
+      "s": "E02",
+      "p": "上报冲突",
+      "o": "E40",
+      "source": "f10"
+    },
+    {
+      "s": "E02",
+      "p": "遭遇典型异常",
+      "o": "E43",
+      "source": "f11"
+    },
+    {
+      "s": "E02",
+      "p": "现场习惯导致",
+      "o": "E41",
+      "source": "f14"
+    },
+    {
+      "s": "E02",
+      "p": "处理峰值",
+      "o": "E75",
+      "source": "f12"
+    },
+    {
+      "s": "E02",
+      "p": "暂停错误建议",
+      "o": "E61",
+      "source": "f15"
+    },
+    {
+      "s": "E03",
+      "p": "负责调整环节",
+      "o": "E14",
+      "source": "f20"
+    },
+    {
+      "s": "E03",
+      "p": "维护工单",
+      "o": "E29",
+      "source": "f23"
+    },
+    {
+      "s": "E03",
+      "p": "使用交接单",
+      "o": "E30",
+      "source": "f23"
+    },
+    {
+      "s": "E03",
+      "p": "不能代替签核",
+      "o": "E05",
+      "source": "f22"
+    },
+    {
+      "s": "E03",
+      "p": "执行规则版本管理",
+      "o": "E54",
+      "source": "f24"
+    },
+    {
+      "s": "E04",
+      "p": "治理口径",
+      "o": "E42",
+      "source": "f30"
+    },
+    {
+      "s": "E04",
+      "p": "暴露新旧代码并存",
+      "o": "E24",
+      "source": "f31"
+    },
+    {
+      "s": "E04",
+      "p": "定义接口边界",
+      "o": "E50",
+      "source": "f32"
+    },
+    {
+      "s": "E04",
+      "p": "执行同步策略",
+      "o": "E51",
+      "source": "f34"
+    },
+    {
+      "s": "E04",
+      "p": "执行兜底策略",
+      "o": "E52",
+      "source": "f35"
+    },
+    {
+      "s": "E05",
+      "p": "执行兜底规则",
+      "o": "E53",
+      "source": "f44"
+    },
+    {
+      "s": "E05",
+      "p": "要求留痕",
+      "o": "E31",
+      "source": "f45"
+    },
+    {
+      "s": "E05",
+      "p": "复核保留期限",
+      "o": "E56",
+      "source": "f43"
+    },
+    {
+      "s": "E05",
+      "p": "可否决上线",
+      "o": "E60",
+      "source": "f04"
+    },
+    {
+      "s": "E05",
+      "p": "把关权限红线",
+      "o": "E55",
+      "source": "f41"
+    },
+    {
+      "s": "E06",
+      "p": "参与验收",
+      "o": "E73",
+      "source": "f02"
+    },
+    {
+      "s": "E06",
+      "p": "定义统计口径",
+      "o": "E45",
+      "source": "f53"
+    },
+    {
+      "s": "E06",
+      "p": "提出三口径分歧",
+      "o": "E42",
+      "source": "f50"
+    },
+    {
+      "s": "E06",
+      "p": "受理反馈",
+      "o": "E64",
+      "source": "f54"
+    },
+    {
+      "s": "E10",
+      "p": "前置于",
+      "o": "E11",
+      "source": "f01"
+    },
+    {
+      "s": "E11",
+      "p": "前置于",
+      "o": "E12",
+      "source": "f01"
+    },
+    {
+      "s": "E12",
+      "p": "前置于",
+      "o": "E13",
+      "source": "f01"
+    },
+    {
+      "s": "E13",
+      "p": "前置于",
+      "o": "E14",
+      "source": "f01"
+    },
+    {
+      "s": "E14",
+      "p": "前置于",
+      "o": "E15",
+      "source": "f01"
+    },
+    {
+      "s": "E13",
+      "p": "依赖数据",
+      "o": "E20",
+      "source": "f21"
+    },
+    {
+      "s": "E13",
+      "p": "依赖数据",
+      "o": "E21",
+      "source": "f21"
+    },
+    {
+      "s": "E13",
+      "p": "依赖数据",
+      "o": "E22",
+      "source": "f21"
+    },
+    {
+      "s": "E13",
+      "p": "依赖数据",
+      "o": "E23",
+      "source": "f21"
+    },
+    {
+      "s": "E13",
+      "p": "检出",
+      "o": "E40",
+      "source": "f10"
+    },
+    {
+      "s": "E40",
+      "p": "触发",
+      "o": "E28",
+      "source": "f12"
+    },
+    {
+      "s": "E28",
+      "p": "生成",
+      "o": "E29",
+      "source": "f25"
+    },
+    {
+      "s": "E29",
+      "p": "交接使用",
+      "o": "E30",
+      "source": "f23"
+    },
+    {
+      "s": "E43",
+      "p": "属于转人工情形",
+      "o": "E53",
+      "source": "f44"
+    },
+    {
+      "s": "E42",
+      "p": "削弱",
+      "o": "E72",
+      "source": "f33"
+    },
+    {
+      "s": "E44",
+      "p": "阻碍验收",
+      "o": "E71",
+      "source": "f01"
+    },
+    {
+      "s": "E44",
+      "p": "阻碍验收",
+      "o": "E73",
+      "source": "f53"
+    },
+    {
+      "s": "E45",
+      "p": "威胁",
+      "o": "E73",
+      "source": "f53"
+    },
+    {
+      "s": "E40",
+      "p": "由…缓解",
+      "o": "E60",
+      "source": "f10"
+    },
+    {
+      "s": "E41",
+      "p": "由…解决",
+      "o": "E63",
+      "source": "f23"
+    },
+    {
+      "s": "E42",
+      "p": "由…解决",
+      "o": "E62",
+      "source": "f33"
+    },
+    {
+      "s": "E43",
+      "p": "由…解决",
+      "o": "E61",
+      "source": "f44"
+    },
+    {
+      "s": "E31",
+      "p": "由…保障",
+      "o": "E64",
+      "source": "f45"
+    },
+    {
+      "s": "E60",
+      "p": "受限于",
+      "o": "E50",
+      "source": "f32"
+    },
+    {
+      "s": "E60",
+      "p": "受限于",
+      "o": "E51",
+      "source": "f34"
+    },
+    {
+      "s": "E60",
+      "p": "由…执行",
+      "o": "E84",
+      "source": "f02"
+    },
+    {
+      "s": "E60",
+      "p": "支撑达成",
+      "o": "E70",
+      "source": "f00"
+    },
+    {
+      "s": "E61",
+      "p": "保护",
+      "o": "E26",
+      "source": "f15"
+    },
+    {
+      "s": "E61",
+      "p": "留痕至",
+      "o": "E31",
+      "source": "f44"
+    },
+    {
+      "s": "E62",
+      "p": "校验对象",
+      "o": "E24",
+      "source": "f33"
+    },
+    {
+      "s": "E62",
+      "p": "歧义进修复队列",
+      "o": "E83",
+      "source": "f33"
+    },
+    {
+      "s": "E62",
+      "p": "支撑达成",
+      "o": "E72",
+      "source": "f33"
+    },
+    {
+      "s": "E63",
+      "p": "度量",
+      "o": "E44",
+      "source": "f53"
+    },
+    {
+      "s": "E63",
+      "p": "支撑达成",
+      "o": "E71",
+      "source": "f00"
+    },
+    {
+      "s": "E64",
+      "p": "依赖",
+      "o": "E50",
+      "source": "f32"
+    },
+    {
+      "s": "E64",
+      "p": "留存期限",
+      "o": "E56",
+      "source": "f43"
+    },
+    {
+      "s": "E65",
+      "p": "治理",
+      "o": "E45",
+      "source": "f53"
+    },
+    {
+      "s": "E65",
+      "p": "支撑达成",
+      "o": "E73",
+      "source": "f53"
+    },
+    {
+      "s": "E76",
+      "p": "约束",
+      "o": "E60",
+      "source": "f03"
+    },
+    {
+      "s": "E80",
+      "p": "驱动",
+      "o": "E81",
+      "source": "技术方案"
+    },
+    {
+      "s": "E81",
+      "p": "检索",
+      "o": "E82",
+      "source": "技术方案"
+    },
+    {
+      "s": "E81",
+      "p": "使用",
+      "o": "E83",
+      "source": "技术方案"
+    },
+    {
+      "s": "E82",
+      "p": "锚定事实",
+      "o": "E31",
+      "source": "f45"
+    },
+    {
+      "s": "E84",
+      "p": "依赖",
+      "o": "E82",
+      "source": "技术方案"
+    },
+    {
+      "s": "E84",
+      "p": "校验",
+      "o": "E21",
+      "source": "f21"
+    },
+    {
+      "s": "E84",
+      "p": "校验",
+      "o": "E22",
+      "source": "f21"
+    },
+    {
+      "s": "E84",
+      "p": "输出建议至",
+      "o": "E13",
+      "source": "f52"
+    },
+    {
+      "s": "E94",
+      "p": "由…印证",
+      "o": "E60",
+      "source": "行业分析报告 §6.4"
+    },
+    {
+      "s": "E94",
+      "p": "由…印证",
+      "o": "E62",
+      "source": "行业分析报告 §6.4"
+    },
+    {
+      "s": "E92",
+      "p": "指向机会",
+      "o": "E94",
+      "source": "行业分析报告 §6.4"
+    },
+    {
+      "s": "E93",
+      "p": "佐证",
+      "o": "E90",
+      "source": "行业分析报告 §2.2"
+    },
+    {
+      "s": "E91",
+      "p": "描述竞争格局",
+      "o": "E90",
+      "source": "行业分析报告 §4.3"
+    },
+    {
+      "s": "E74",
+      "p": "构成基线",
+      "o": "E75",
+      "source": "f51"
+    },
+    {
+      "s": "E55",
+      "p": "约束访问",
+      "o": "E20",
+      "source": "f41"
+    },
+    {
+      "s": "E55",
+      "p": "约束访问",
+      "o": "E21",
+      "source": "f41"
+    },
+    {
+      "s": "E55",
+      "p": "约束访问",
+      "o": "E22",
+      "source": "f41"
+    },
+    {
+      "s": "E55",
+      "p": "约束访问",
+      "o": "E23",
+      "source": "f41"
+    },
+    {
+      "s": "E52",
+      "p": "降级保护",
+      "o": "E60",
+      "source": "f35"
+    },
+    {
+      "s": "E12",
+      "p": "产生",
+      "o": "E25",
+      "source": "f10"
+    },
+    {
+      "s": "E11",
+      "p": "产出",
+      "o": "E26",
+      "source": "f20"
+    },
+    {
+      "s": "E26",
+      "p": "占用",
+      "o": "E27",
+      "source": "f11"
+    },
+    {
+      "s": "E43",
+      "p": "污染",
+      "o": "E26",
+      "source": "f11"
+    },
+    {
+      "s": "E15",
+      "p": "归档至",
+      "o": "E31",
+      "source": "f20"
+    },
+    {
+      "s": "E02",
+      "p": "受限于终端",
+      "o": "E55",
+      "source": "f13"
+    },
+    {
+      "s": "E06",
+      "p": "关联业务编号",
+      "o": "E29",
+      "source": "f54"
+    },
+    {
+      "s": "E63",
+      "p": "采集",
+      "o": "E44",
+      "source": "f53"
+    }
+  ]
+}</script>
+<script>
+/* ================= 数据 ================= */
+const KB = JSON.parse(document.getElementById('kb-data').textContent);
+const ent = {}; KB.entities.forEach(e => ent[e.id] = e);
+const S = {
+  seq: 418, resolved: 0, conflictNow: 280, tickets: [], audit: [], draft: [],
+  outage: false, selT: null
+};
+const COURSES = [
+  { id:'C01', name:'移动应用开发', teacher:'周晨', time:'周二 5-6 节', left:'12/45', ok:true },
+  { id:'C02', name:'Python 数据分析', teacher:'吴岚', time:'周三 5-6 节', left:'8/45', type:'prereq', miss:'数据库基础' },
+  { id:'C03', name:'软件测试', teacher:'郑楠', time:'周三 5-6 节', left:'3/45', type:'time', with:'Python 数据分析' },
+  { id:'C04', name:'嵌入式系统', teacher:'高远', time:'周四 3-4 节', left:'20/40', type:'room' },
+];
+function seedTickets() {
+  S.tickets = [
+    { no:'TZ-2026-0417', type:'场地占用（f11）', status:'转人工', owner:'唐映秋', steps:2, reason:'实训室设备维护占用场地，排课表仍视为可用教室（f11）', ai:'改排至教学楼 305（原记录与待确认字段已显示 · f15）', wait:'3.2h' },
+    { no:'TZ-2026-0416', type:'时间冲突', status:'AI 建议待采纳', owner:'系统建议', steps:1, reason:'与《Python 数据分析》同时段', ai:'建议改选周四同时段课程', wait:'—' },
+    { no:'TZ-2026-0415', type:'容量冲突 48/45', status:'待接手确认', owner:'秦芮 → 唐映秋', steps:1, reason:'跨学院容量规则不一致（f31）', ai:'建议拆分教学班或调换教室', wait:'1.1h' },
+    { no:'TZ-2026-0414', type:'先修冲突', status:'已闭环', owner:'叶书验收', steps:6, reason:'未修读先修课', ai:'建议先修或特殊申请（f40）', wait:'—' },
+  ];
+}
+function seedAudit() {
+  S.audit = [
+    { t:'14:02', kind:'ai', x:'<b>冲突检出</b> · 冲突预检引擎 · 依据 先修关系 V2.7 / 教室容量 V1.9 <span class="badge b-gray">[f11]</span>', no:'TZ-2026-0417' },
+    { t:'14:02', kind:'ai', x:'<b>AI 建议生成</b>：改排教学楼 305 <span class="badge b-teal">建议，非决定</span> · 已自动落库', no:'TZ-2026-0417' },
+    { t:'14:05', kind:'human', x:'<b>触发强制转人工</b>（场地占用）· 触发原因/接手人/确认时间已标注 <span class="badge b-gray">[f44]</span>', no:'TZ-2026-0417' },
+    { t:'14:31', kind:'human', x:'<b>唐映秋接手确认</b> · 交接五要素齐备 · 人工改动：核对维护结束时间为 10-30 18:00', no:'TZ-2026-0417' },
+  ];
+}
+seedTickets(); seedAudit();
+
+/* ================= 工具 ================= */
+function $(id){ return document.getElementById(id); }
+function nowHM(){ const d = new Date(); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
+function toast(msg){ const d = document.createElement('div'); d.className='toast'; d.innerHTML = msg; $('toasts').appendChild(d); setTimeout(()=>d.remove(), 4200); }
+function audit(kind, no, x){ S.audit.push({ t: nowHM(), kind, no, x }); renderAudit(); }
+function badgeFor(status){
+  if (status.includes('转人工')) return '<span class="badge b-red">强制转人工</span>';
+  if (status.includes('闭环')) return '<span class="badge b-green">已闭环</span>';
+  if (status.includes('待接手')) return '<span class="badge b-warn">待接手确认</span>';
+  if (status.includes('AI')) return '<span class="badge b-blue">AI 建议待采纳</span>';
+  if (status.includes('处理中')) return '<span class="badge b-blue">处理中</span>';
+  return '<span class="badge b-gray">'+status+'</span>';
+}
+
+/* ================= 导航 ================= */
+document.querySelectorAll('#nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  $(b.dataset.v).classList.add('on');
+  $('vtitle').textContent = b.textContent.trim().slice(2);
+});
+$('btnReset').onclick = () => { location.reload(); };
+
+/* ================= 中断模拟 ================= */
+$('btnOutage').onclick = () => {
+  S.outage = true;
+  $('outageBanner').style.display = 'block';
+  $('btnOutage').disabled = true;
+  $('synclabel').innerHTML = '⚠ 快照模式 · 数据截至 <b>14:00（暂未更新）</b>';
+  $('st2').innerHTML = '<span class="badge b-warn">延迟 1 周期</span>'; $('st2b').textContent = '快照 14:00（f35）';
+  audit('human', '—', '<b>接口中断</b> · 启用带时间戳只读快照，界面标注「暂未更新」，不作实时承诺 <span class="badge b-gray">[f35]</span>');
+  toast('⚡ 已切换为快照模式：所有提示带快照时间，且不承诺实时（f34/f35）');
+};
+$('btnReconnect').onclick = () => {
+  S.outage = false;
+  $('outageBanner').style.display = 'none';
+  $('btnOutage').disabled = false;
+  $('synclabel').innerHTML = '数据同步：' + nowHM() + '（15 分钟周期 · f34）';
+  $('st2').innerHTML = '<span class="badge b-green">正常</span>'; $('st2b').textContent = '只读';
+  audit('human', '—', '<b>接口重连恢复</b> · 按业务编号去重补齐，未重复触发同一待办 <span class="badge b-gray">[f35]</span>');
+  toast('✅ 已恢复同步：按业务编号去重补齐，人工流程未中断');
+};
+
+/* ================= V1 工作台 ================= */
+function renderTodo() {
+  const rows = [
+    { no:'TZ-2026-0417', item:'实训室占用异常复核（f11）', st: badgeFor('转人工') },
+    { no:'TZ-2026-0415', item:'跨学院容量规则确认', st: badgeFor('待接手') },
+  ];
+  S.tickets.filter(t=>t.dynamic).forEach(t => rows.unshift({ no:t.no, item:t.type, st:badgeFor(t.status) }));
+  $('todoBody').innerHTML = rows.map(r=>'<tr><td>'+r.no+'</td><td>'+r.item+'</td><td>'+r.st+'</td></tr>').join('');
+}
+function renderKpi() {
+  $('kConflict').textContent = S.conflictNow;
+  const pct = (360 - S.conflictNow) / 360 * 100;
+  $('kConflictD').textContent = '较基线 -' + (100 - S.conflictNow/360*100).toFixed(1) + '%（固定分母 f53）';
+}
+
+/* ================= V2 排课 ================= */
+$('btnRun').onclick = function() {
+  this.disabled = true; this.textContent = '⏳ 求解中…';
+  setTimeout(() => {
+    this.disabled = false; this.textContent = '▶ 运行排课';
+    $('engineInfo').innerHTML = '上轮结果：<b>420 门次</b> / 软约束满足 96.2% / <b>硬冲突 0</b>（耗时 41s）。黄纹场地异常不计入引擎硬冲突，走转人工流程（f44）。';
+    toast('✅ 排课完成：420 门次，硬冲突 0 · 结果已写入课表');
+    audit('ai', '—', '<b>排课引擎运行</b> · 420 门次 / 硬冲突 0 · 版本 V3.1/V2.7/V1.9/V2.2 已校验');
+  }, 1200);
+};
+
+/* ================= V3 选课 ================= */
+function renderCourses() {
+  $('courseBody').innerHTML = COURSES.map(c => {
+    let tip, cls = '', btn = '<button class="btn sm" onclick="pick(\''+c.id+'\')">选课</button>';
+    if (c.ok) tip = '<span class="badge b-green">✓ 无冲突</span> 先修已通过';
+    else if (c.type==='prereq') { cls='row-conflict'; tip = '<span class="badge b-red">⚠ 先修冲突</span> 未修读《'+c.miss+'》<br><span style="color:var(--muted);font-size:11.5px">建议：先修或特殊申请（特殊申请由教务确认 · f40）</span>'; }
+    else if (c.type==='time') { cls='row-warn'; tip = '<span class="badge b-warn">⚠ 时间冲突</span> 与《'+c.with+'》同时段<br><span style="color:var(--muted);font-size:11.5px">'+(S.outage?'数据截至快照 14:00 · 暂未更新':'数据截至 '+nowHM()+' 同步')+'，不作实时承诺（f34）</span>'; }
+    else if (c.type==='room') { cls='row-warn'; tip = '<span class="badge b-warn">场地待核实</span> 实训楼 A302 维护占用（f11）→ 将转排课专员'; btn = '<button class="btn ghost sm" onclick="pick(\''+c.id+'\')">仍要选</button>'; }
+    return '<tr class="'+cls+'"><td><b>'+c.name+'</b></td><td>'+c.teacher+'</td><td>'+c.time+'</td><td>'+c.left+'</td><td>'+tip+'</td><td>'+btn+'</td></tr>';
+  }).join('');
+}
+window.pick = function(id) {
+  const c = COURSES.find(x=>x.id===id);
+  if (c.ok) {
+    S.draft.push(c.name);
+    $('draftList').innerHTML = S.draft.map(n=>'✅ '+n).join('<br>') + '<br><span style="color:var(--muted)">最后同步 '+nowHM()+' · 只读提示不会替你选课（f32）</span>';
+    toast('✅《'+c.name+'》无冲突，已加入草稿（结果落库走原教务系统）');
+    return;
+  }
+  const no = 'TZ-2026-0' + (S.seq++);
+  if (c.type === 'prereq') {
+    S.tickets.unshift({ no, type:'先修冲突 · '+c.name, status:'AI 建议待采纳', owner:'系统建议', steps:1, dynamic:true, reason:'未修读先修课《'+c.miss+'》（先修关系 V2.7）', ai:'建议先修《'+c.miss+'》，或提交特殊申请（由教务确认 · f40）', wait:'0.1h' });
+    audit('ai', no, '<b>选中前只读提示</b>：先修冲突 · 依据 先修关系 V2.7 <span class="badge b-gray">[f10][f52]</span>');
+    toast('⚠ 已在<b>选中前</b>拦截先修冲突（REQ-1）· 工单 '+no+' 已生成，去「冲突工作流」查看');
+  } else if (c.type === 'time') {
+    S.tickets.unshift({ no, type:'时间冲突 · '+c.name, status:'AI 建议待采纳', owner:'系统建议', steps:1, dynamic:true, reason:'与《'+c.with+'》同时段', ai:'建议改选其他时段', wait:'0.1h' });
+    audit('ai', no, '<b>选中前只读提示</b>：时间冲突 · 数据截至 '+(S.outage?'快照 14:00':nowHM())+' <span class="badge b-gray">[f34]</span>');
+    toast('⚠ 时间冲突提示（数据'+(S.outage?'为快照 14:00':'截至 '+nowHM())+'）· 工单 '+no+' 已生成');
+  } else if (c.type === 'room') {
+    S.tickets.unshift({ no, type:'场地占用 · '+c.name, status:'转人工', owner:'唐映秋', steps:2, dynamic:true, reason:'实训室设备维护占用场地，排课表仍视为可用教室（f11）', ai:'暂停建议，待排课专员核对场地状态（f15）', wait:'0.1h' });
+    audit('human', no, '<b>触发强制转人工</b>（场地占用）· 接手人：唐映秋 · 确认时间 '+nowHM()+' <span class="badge b-gray">[f44]</span>');
+    toast('🚨 四类兜底情形命中（f44）→ 已<b>强制转人工</b>并留痕 · 工单 '+no);
+  }
+  S.conflictNow++;
+  renderTickets(); renderTodo(); renderKpi();
+  switchView('v4');
+};
+function switchView(v) {
+  document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on', x.dataset.v===v));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
+  $(v).classList.add('on');
+  $('vtitle').textContent = document.querySelector('#nav button.on').textContent.trim().slice(2);
+}
+
+/* ================= V4 工作流 ================= */
+function renderTickets() {
+  $('ticketBody').innerHTML = S.tickets.map((t,i) =>
+    '<tr style="cursor:pointer" onclick="selT('+i+')"><td><b>'+t.no+'</b></td><td>'+t.type+'</td><td>'+badgeFor(t.status)+'</td><td>'+t.owner+'</td></tr>').join('');
+  if (S.selT === null) S.selT = 0;
+  renderTicketDetail();
+}
+window.selT = function(i) { S.selT = i; renderTicketDetail(); };
+function renderTicketDetail() {
+  const t = S.tickets[S.selT]; if (!t) return;
+  const stepNames = ['冲突检出','AI建议/转人工','接手核对','质量签核','名单确认','闭环归档'];
+  const steps = stepNames.map((n,i) => {
+    const st = i < t.steps ? 'done' : (i === t.steps ? 'cur' : '');
+    return '<div class="s '+st+'"><div class="dot">'+(i<t.steps?'✓':(i+1))+'</div>'+n+'</div>' + (i<stepNames.length-1?'<div class="link"></div>':'');
+  }).join('');
+  let actions = '';
+  if (t.status.includes('待接手')) actions = '<button class="btn sm ok" onclick="receive('+S.selT+')">✔ 确认接手</button> <span style="font-size:11.5px;color:var(--muted)">仅发送消息不算完成（f23）· 超时限升级教务主任（f25）</span>';
+  else if (t.status.includes('AI 建议')) actions = '<button class="btn sm" onclick="adopt('+S.selT+')">采纳建议</button> <button class="btn ghost sm" onclick="manual('+S.selT+')">暂停并转人工</button>';
+  else if (t.status.includes('处理中') || t.status.includes('核对')) actions = '<button class="btn sm warn" onclick="sign('+S.selT+')">提交质量签核（傅景）</button>';
+  else if (t.status.includes('转人工') && t.steps===2) actions = '<button class="btn sm warn" onclick="sign('+S.selT+')">核对完成 → 提交质量签核</button>';
+  else if (t.status.includes('签核中')) actions = '<button class="btn sm ok" onclick="close('+S.selT+')">签核通过 → 名单确认</button>';
+  $('ticketDetail').innerHTML = '<h4>'+t.no+' · 详情</h4><div class="steps">'+steps+'</div>' +
+    '<table class="tb">' +
+    '<tr><td style="width:100px;color:var(--muted)">触发原因</td><td>'+t.reason+'</td></tr>' +
+    '<tr><td style="color:var(--muted)">AI 建议原文</td><td>'+t.ai+' <span class="badge b-gray">建议 ≠ 决定</span></td></tr>' +
+    '<tr><td style="color:var(--muted)">资料版本</td><td>培养方案 V3.1 · 教室容量 V1.9 · 快照 '+nowHM()+'（f35）</td></tr>' +
+    '<tr><td style="color:var(--muted)">交接五要素</td><td>业务编号 '+t.no+' · 版本 V1.9 · 状态 '+t.status+' · 未解决事项见上 · 接手人 '+t.owner+'</td></tr>' +
+    (t.wait!=='—'?'<tr><td style="color:var(--muted)">交接等待</td><td>'+t.wait+'（逐笔采集 · REQ-4）</td></tr>':'') +
+    '</table><div style="margin-top:10px;">'+actions+'</div>';
+}
+window.receive = function(i) {
+  const t = S.tickets[i]; t.status = '处理中'; t.steps = 2; t.owner = '唐映秋';
+  audit('human', t.no, '<b>接手确认</b> · 唐映秋 · 本岗待办结束需对方确认（f23）');
+  toast('✅ 接手确认完成，工单进入核对处理');
+  renderTickets(); renderTodo();
+};
+window.adopt = function(i) {
+  const t = S.tickets[i]; t.status = '处理中'; t.steps = 2; t.owner = '唐映秋';
+  audit('human', t.no, '<b>人工采纳 AI 建议</b> · 决定由人工作出，系统仅建议 <span class="badge b-gray">[f52]</span>');
+  toast('✅ 建议已由人工采纳（建议 ≠ 决定）');
+  renderTickets();
+};
+window.manual = function(i) {
+  const t = S.tickets[i]; t.status = '转人工'; t.steps = 2; t.owner = '唐映秋';
+  audit('human', t.no, '<b>人工暂停建议并转人工</b> · 触发原因/接手人/确认时间已标注，错误建议不覆盖原记录 <span class="badge b-gray">[f44][f15]</span>');
+  toast('🚨 已转人工并留痕（f44）');
+  renderTickets(); renderTodo();
+};
+window.sign = function(i) {
+  const t = S.tickets[i]; t.status = '质量签核中'; t.steps = 3; t.owner = '傅景（签核）';
+  audit('human', t.no, '<b>提交专业签核</b> · 排课专员不能代替签核（f22），由傅景审签');
+  toast('📤 已提交傅景签核');
+  renderTickets();
+};
+window.close = function(i) {
+  const t = S.tickets[i]; t.status = '已闭环'; t.steps = 6; t.owner = '叶书验收';
+  S.resolved++; S.conflictNow = Math.max(80, S.conflictNow - 1);
+  audit('human', t.no, '<b>签核通过 · 名单确认 · 闭环归档</b> · 审计字段全量落库 <span class="badge b-gray">[f45]</span>');
+  toast('🎉 工单闭环！本学期冲突数 '+S.conflictNow+'（向 80 迈进）');
+  renderTickets(); renderTodo(); renderKpi();
+};
+
+/* ================= V5 AI 助手 ================= */
+const INTENTS = [
+  { keys:['占用','维护','实训','场地','进不去'], a:'这属于<b>四类强制转人工情形</b>中的「场地占用」：实训室设备维护占用场地但排课表仍视为可用教室 <span class="cite">[f11]</span>。处理路径：<br>1️⃣ 系统已暂停该时段 AI 建议，由排课专员唐映秋核对后继续，<b>错误结果不会覆盖原记录</b> <span class="cite">[f15]</span>；<br>2️⃣ 转人工记录标注触发原因、接手人与确认时间 <span class="cite">[f44]</span>；<br>3️⃣ 你可暂存草稿、显示最后同步时间，无需离开现场补录 <span class="cite">[f13]</span>。' },
+  { keys:['只读','自动','替学生','替我','写','成绩'], a:'本系统接口为<b>只读</b>：可读课程与冲突，不能自动替学生选课或修改成绩 <span class="cite">[f32]</span>；冲突检查与方案建议可以，但<b>不自动改变培养计划</b> <span class="cite">[f52]</span>。选课结果落库走原教务系统。' },
+  { keys:['同步','实时','刷新','多久','频率','15'], a:'业务状态每 <b>15 分钟</b>同步一次，超过一个更新周期自动标为「待刷新」，<b>不作实时承诺</b> <span class="cite">[f34]</span>。' },
+  { keys:['中断','快照','故障','挂了','网'], a:'接口中断时继续使用<b>带时间戳的上一份只读快照</b>并显示「暂未更新」；重连后按业务编号去重补齐，不反复触发同一待办，人工流程继续运行 <span class="cite">[f35]</span>。可点右上角「模拟接口中断」实际体验。' },
+  { keys:['验收','指标','识别率','工时','30%','成功'], a:'试点验收硬指标：一个专业内<b>时空冲突识别率 100%</b>、<b>人工调整工时下降 30%</b> <span class="cite">[f02][f42]</span>。统计须<b>固定分母、排除规则、统计周期</b>，不能把同一业务拆成多次成功 <span class="cite">[f53]</span>；触及停止条件即暂停试点并由负责人复盘 <span class="cite">[f42]</span>。' },
+  { keys:['交接','转交','待办','接手'], a:'交接至少包含<b>业务编号、当前版本、处理状态、未解决事项和接手人</b>，对方确认接手才结束本岗待办，仅发送消息不算完成 <span class="cite">[f23]</span>；异常先分派实际处理人，超时限升级教务主任，跨岗不能只写「已转交」 <span class="cite">[f25]</span>。' },
+  { keys:['审计','留痕','追溯','签核','落库'], a:'审计要求可重建处理链路：每次建议保留<b>业务编号、资料版本、事实引用、建议结果、人工改动和签核人</b>，全部自动落库，不记录账号口令与不必要个人信息 <span class="cite">[f45]</span>。评价记录暂保留 90 天，期满复核删除或归档 <span class="cite">[f43]</span>。' },
+  { keys:['权限','账号','谁可以'], a:'培养方案、先修关系、教室容量、教师排班仅<b>授权业务岗位</b>可查看，不能借用他人账号 <span class="cite">[f41]</span>；课程资格与公平分配须保留依据，特殊申请由教务确认 <span class="cite">[f40]</span>；最终决定走对应审批人。' },
+];
+function composeAI(q) {
+  const hit = INTENTS.find(it => it.keys.some(k => q.includes(k)));
+  if (hit) return hit.a;
+  // fallback: 三元组检索
+  const toks = q.replace(/[？?，。、！！\s]/g,'').split(/(哪些|什么|怎么|如何|为什么|多少|能不能)/).filter(x=>x.length>=2);
+  const rs = KB.relations.map(r => {
+    const txt = ent[r.s].name + ent[r.s].desc + r.p + ent[r.o].name + ent[r.o].desc;
+    return { r, s: ent[r.s].name, o: ent[r.o].name, sc: toks.reduce((a,t)=>a+(txt.includes(t)?1:0),0) };
+  }).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,4);
+  if (!rs.length) return '未在知识库中检索到直接相关的事实。试试问：转人工情形、只读边界、同步频率、验收指标、交接要求、审计留痕。<span class="cite">（低置信不自动回答 · f33 精神）</span>';
+  return '基于知识图谱检索，相关事实如下：<br>' + rs.map(x=>'• <b>'+x.s+'</b> —'+x.r.p+'→ <b>'+x.o+'</b> <span class="cite">['+x.r.source+']</span>').join('<br>');
+}
+function ask(q) {
+  if (!q.trim()) return;
+  $('chatBox').insertAdjacentHTML('beforeend', '<div class="msg user">'+q+'</div>');
+  const ans = composeAI(q);
+  const ts = S.outage ? '快照 14:00 · 暂未更新' : nowHM() + ' 同步';
+  setTimeout(() => {
+    $('chatBox').insertAdjacentHTML('beforeend',
+      '<div class="msg ai"><div class="hdr"><span class="badge b-purple">RAG</span><span>数据截至 '+ts+'</span><span class="badge b-gray">建议，非决定</span></div>'+ans+'</div>');
+    $('chatBox').scrollTop = 99999;
+    audit('ai', '—', '<b>AI 助手回答</b>：'+q.slice(0,18)+'… · 回答含 [f##] 引用，已落库 <span class="badge b-gray">[f45]</span>');
+  }, 350);
+  $('chatBox').scrollTop = 99999;
+  $('aiq').value = '';
+}
+$('aiAsk').onclick = () => ask($('aiq').value);
+$('aiq').addEventListener('keydown', e => { if (e.key==='Enter') ask(e.target.value); });
+['实训室被占用了系统怎么处理？','AI 能不能自动替学生选课？','试点验收有哪些硬指标？','接口中断了怎么办？','交接时必须包含哪些信息？'].forEach(q => {
+  const b = document.createElement('button'); b.textContent = q; b.onclick = () => ask(q);
+  $('aiExamples').appendChild(b);
+});
+
+/* ================= V6 知识图谱 ================= */
+const CATS = KB.schema.category_labels;
+const COLORS = { role:'#2563eb', process:'#0d9488', object:'#7c3aed', painpoint:'#dc2626', constraint:'#d97706', requirement:'#16a34a', metric:'#db2777', tech:'#0891b2', industry:'#64748b' };
+const RADIUS = { role:14, process:11, object:10, painpoint:12, constraint:10, requirement:12, metric:11, tech:10, industry:10 };
+$('kgStats').textContent = KB.entities.length + ' 实体 / ' + KB.relations.length + ' 三元组';
+const active = new Set(Object.keys(CATS));
+Object.entries(CATS).forEach(([k,v]) => {
+  const c = document.createElement('span'); c.className='chip on'; c.style.background=COLORS[k]; c.style.borderColor=COLORS[k]; c.textContent=v; c.dataset.k=k;
+  c.onclick = () => { if(active.has(k)){active.delete(k);c.classList.remove('on');c.style.background='#fff';c.style.color=COLORS[k];} else {active.add(k);c.classList.add('on');c.style.background=COLORS[k];c.style.color='#fff';} kgFilter(); };
+  $('kgChips').appendChild(c);
+});
+const W=960, H=560;
+const knodes = KB.entities.map((e,i)=>({ id:e.id, x:W/2+Math.cos(i*2.4)*210+(Math.random()-.5)*50, y:H/2+Math.sin(i*2.4)*150+(Math.random()-.5)*50, vx:0, vy:0, e }));
+const kmap = {}; knodes.forEach(n=>kmap[n.id]=n);
+const klinks = KB.relations.map(r=>({ s:kmap[r.s], o:kmap[r.o], r }));
+let kalpha = 1;
+function ktick() {
+  for (let i=0;i<knodes.length;i++) for (let j=i+1;j<knodes.length;j++) {
+    const a=knodes[i], b=knodes[j]; let dx=a.x-b.x, dy=a.y-b.y, d2=dx*dx+dy*dy||1;
+    if (d2>81000) continue; const d=Math.sqrt(d2), f=1700*kalpha/d2; dx/=d; dy/=d;
+    a.vx+=dx*f; a.vy+=dy*f; b.vx-=dx*f; b.vy-=dy*f;
+  }
+  klinks.forEach(l => { let dx=l.o.x-l.s.x, dy=l.o.y-l.s.y, d=Math.sqrt(dx*dx+dy*dy)||1; const f=(d-92)*0.4*kalpha; dx/=d; dy/=d; l.s.vx+=dx*f; l.s.vy+=dy*f; l.o.vx-=dx*f; l.o.vy-=dy*f; });
+  knodes.forEach(n => { n.vx+=(W/2-n.x)*0.012*kalpha; n.vy+=(H/2-n.y)*0.016*kalpha; if(n.fixed){n.x=n.fx;n.y=n.fy;n.vx=n.vy=0;return;} n.vx*=0.85; n.vy*=0.85; n.x=Math.max(22,Math.min(W-22,n.x+n.vx)); n.y=Math.max(22,Math.min(H-22,n.y+n.vy)); });
+}
+for (let i=0;i<300;i++){ kalpha=Math.max(.05,1-i/280); ktick(); }
+const kgSvg = $('kgSvg');
+const gL=document.createElementNS('http://www.w3.org/2000/svg','g'), gN=document.createElementNS('http://www.w3.org/2000/svg','g');
+kgSvg.appendChild(gL); kgSvg.appendChild(gN);
+const klinkEls=[], knodeEls=new Map();
+klinks.forEach(l=>{ const ln=document.createElementNS('http://www.w3.org/2000/svg','line'); ln.setAttribute('stroke','#cbd5e1'); ln.setAttribute('stroke-width','1'); gL.appendChild(ln); klinkEls.push({el:ln,l}); });
+knodes.forEach(n=>{
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.style.cursor='pointer';
+  const c=document.createElementNS('http://www.w3.org/2000/svg','circle'); c.setAttribute('r',RADIUS[n.e.category]); c.setAttribute('fill',COLORS[n.e.category]); c.setAttribute('stroke','#fff'); c.setAttribute('stroke-width','2');
+  const t=document.createElementNS('http://www.w3.org/2000/svg','text'); t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','10'); t.setAttribute('fill','#334155'); t.setAttribute('dy',RADIUS[n.e.category]+11);
+  t.textContent = n.e.name.length>9 ? n.e.name.slice(0,9)+'…' : n.e.name;
+  g.appendChild(c); g.appendChild(t);
+  g.addEventListener('mousedown', ev=>{ n.fixed=true; const p=svgPt(ev); n.fx=p.x; n.fy=p.y; kalpha=Math.max(kalpha,.25); ev.preventDefault(); });
+  g.addEventListener('click', ()=>kgDetail(n));
+  gN.appendChild(g); knodeEls.set(n.id,{g,n});
+});
+function kgDraw(){ klinkEls.forEach(({el,l})=>{ el.setAttribute('x1',l.s.x); el.setAttribute('y1',l.s.y); el.setAttribute('x2',l.o.x); el.setAttribute('y2',l.o.y); }); knodeEls.forEach(({g,n})=>g.setAttribute('transform','translate('+n.x+','+n.y+')')); }
+(function kloop(){ if(kalpha>.01){ ktick(); kalpha*=.996; } kgDraw(); requestAnimationFrame(kloop); })();
+window.addEventListener('mousemove', ev=>{ const n=knodes.find(x=>x.fixed); if(!n) return; const p=svgPt(ev); n.fx=p.x; n.fy=p.y; });
+window.addEventListener('mouseup', ()=>knodes.forEach(n=>n.fixed=false));
+function svgPt(ev){ const r=kgSvg.getBoundingClientRect(); return { x:(ev.clientX-r.left)/r.width*W, y:(ev.clientY-r.top)/r.height*H }; }
+function kgFilter(){
+  knodeEls.forEach(({g},id)=>g.style.display=active.has(ent[id].category)?'':'none');
+  klinkEls.forEach(({el,l})=>el.style.display=(active.has(ent[l.s.id].category)&&active.has(ent[l.o.id].category))?'':'none');
+}
+function kgDetail(n){
+  const e=n.e;
+  const rels=KB.relations.filter(r=>r.s===e.id||r.o===e.id).slice(0,8);
+  $('kgDetail').innerHTML = '<div style="font-size:15px;font-weight:700;margin-bottom:4px;">'+e.name+' <span class="badge" style="background:'+COLORS[e.category]+';color:#fff">'+CATS[e.category]+'</span></div>' +
+    '<div style="color:#334155;margin:6px 0;">'+e.desc+'</div>' +
+    '<div style="color:var(--muted);font-size:11.5px;margin-bottom:3px;">事实来源：</div><div>' + e.sources.map(s=>'<span class="badge b-gray" style="margin:0 3px 3px 0">'+s+'</span>').join('') + '</div>' +
+    '<div style="color:var(--muted);font-size:11.5px;margin:8px 0 3px;">关联三元组（显示前 8 条）：</div>' +
+    rels.map(r=>{ const other = r.s===e.id?ent[r.o].name:ent[r.s].name; return '<div style="border-left:3px solid '+COLORS[e.category]+';background:#f8fafc;padding:4px 8px;margin-bottom:4px;border-radius:0 6px 6px 0;font-size:11.5px;">'+(r.s===e.id?'':'←')+' '+r.p+' '+(r.s===e.id?'→':'')+' <b style="color:var(--primary)">'+other+'</b> <span style="color:#94a3b8">['+r.source+']</span></div>'; }).join('');
+}
+
+/* ================= V7 审计 ================= */
+function renderAudit() {
+  const t17 = S.audit.filter(a=>a.no==='TZ-2026-0417');
+  const others = S.audit.filter(a=>a.no!=='TZ-2026-0417' && a.no!=='—');
+  const misc = S.audit.filter(a=>a.no==='—').slice(-6);
+  const items = t17.concat(others, misc);
+  $('auditTl').innerHTML = items.map(a=>'<div class="t '+a.kind+'"><b>'+a.t+'</b> '+a.x+'</div>').join('');
+  if (others.length) $('auditScope').textContent = 'TZ-2026-0417 + ' + (others.length + misc.length) + ' 条实时记录';
+}
+
+/* ================= V8 图表 ================= */
+$('conflictChart').innerHTML = [[92,'#93b4f5','W1'],[71,'#93b4f5','W2'],[53,'#2563eb','W3'],[41,'#2563eb','W4'],[18,'#16a34a','目标']]
+  .map(([v,c,l])=>'<div style="flex:1;text-align:center;"><div style="height:'+(v*1.15)+'px;background:'+c+';border-radius:6px 6px 0 0;"></div><div style="font-size:11px;color:var(--muted);margin-top:4px;">'+l+'<br><b>'+v+'</b></div></div>').join('');
+
+/* ================= 初始化 ================= */
+renderTodo(); renderKpi(); renderCourses(); renderTickets(); renderAudit();
+</script>
+</body>
+</html>
